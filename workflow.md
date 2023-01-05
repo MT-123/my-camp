@@ -10,4 +10,5 @@ B.
 2. setup express for home page(app.js and views/home.ejs)
 3. setup mongoose model(campground.js)
 4. create the db my-camp by mongosh and connect it in the app.js
-5. 
+5. create js file for seeding data(seeds/index.js)
+6. 

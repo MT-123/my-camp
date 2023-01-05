@@ -8,5 +8,13 @@
 </head>
 <body>
     <h1>My Camp</h1>
+    <ul>
+        <% for (data of firstData) {%>
+            <li>title:<%=data.title%></li>
+            <li>place:<%=data.price%></li>
+            <li>description:<%=data.description%></li>
+            <li>location:<%=data.location%></li>
+        <% } %>
+    </ul>
 </body>
 </html>

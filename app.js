@@ -15,19 +15,8 @@ app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'/views'));
 
 app.get('/',async (req,res)=>{
-    await Campground.deleteMany({});
-    const firstCamp = new Campground(
-        {
-            title: 'first camp!',
-            price: 'free',
-            description: 'new!!!',
-            location: 'earth'
-        }
-    )
-    await firstCamp.save();
-    const firstData = await Campground.find({}).exec()
-    console.log(firstData);
-    res.render('home',{firstData})
+    const camps = await Campground.find({}).exec()
+    res.render('home',{camps})
 });
 
 app.listen(8080,()=>{

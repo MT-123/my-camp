@@ -14,18 +14,22 @@ db.once('open',()=>{
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'/views'));
 
-app.get('/',async (req,res)=>{
+app.get('/',(req,res)=>{
+    res.render('home')
+})
+
+app.get('/campgrounds',async (req,res)=>{
     const camps = await Campground.find({}).exec()
-    res.render('home',{camps})
+    res.render('./campgrounds/index',{camps})
 });
 
-app.get('/:targetTitle', async (req,res)=>{
-    const {targetTitle} = req.params;
-    console.log(targetTitle);
-    const camp = await Campground.find({title:targetTitle}).exec();
-    console.log(camp);
-    const {title,price,description,location} = camp[0];
-    res.render('show',{title,price,description,location})
+
+
+app.get('/campgrounds/:id', async (req,res)=>{
+    // name the url with hierarchy structure(home/index/element)
+    const {id} = req.params;
+    const camp = await Campground.findById(id).exec();
+    res.render('./campgrounds/show',{camp})
 });
 
 app.listen(8080,()=>{

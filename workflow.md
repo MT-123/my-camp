@@ -11,5 +11,8 @@ B. establish the base structure and seed database
 3. setup mongoose model(campground.js)
 4. create the db my-camp by mongosh and connect it in the app.js
 5. create the js file for seeding data(seeds/index.js)
-C. 
-1. 
+C. create CRUD pages
+1. Read page: show.ejs
+2. Create page: new.ejs
+3. Update page: update.ejs
+4. Delete page: delete.ejs

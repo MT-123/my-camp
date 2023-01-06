@@ -19,6 +19,15 @@ app.get('/',async (req,res)=>{
     res.render('home',{camps})
 });
 
+app.get('/:targetTitle', async (req,res)=>{
+    const {targetTitle} = req.params;
+    console.log(targetTitle);
+    const camp = await Campground.find({title:targetTitle}).exec();
+    console.log(camp);
+    const {title,price,description,location} = camp[0];
+    res.render('show',{title,price,description,location})
+});
+
 app.listen(8080,()=>{
     console.log('V Port 8080 online :)')
 });

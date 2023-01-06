@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const Campground = require('./models/campground');// import the model
+const methodOverride = require('method-override');
 
 mongoose.connect('mongodb://localhost:27017/my-camp');
 const db = mongoose.connection;
@@ -14,7 +15,8 @@ db.once('open', () => {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));// for req.body
+app.use(methodOverride('_method'));
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -45,13 +47,36 @@ app.post('/campgrounds', async (req, res) => {
     res.redirect(`/campgrounds/${newCamp.id}`);
 });
 
-
+// Read
 app.get('/campgrounds/:id', async (req, res) => {
     // name the url with hierarchy structure(home/index/element)
     const { id } = req.params;
     const camp = await Campground.findById(id).exec();
     res.render('./campgrounds/show', { camp })
 });
+
+// Update 1/2
+app.get('/campgrounds/:id/edit', async (req, res) => {
+    const { id } = req.params;
+    const camp = await Campground.findById(id).exec();
+    res.render('./campgrounds/edit', { camp })
+});
+
+
+// Update 2/2
+app.put('/campgrounds/:id', async (req,res)=>{
+    const { id } = req.params;
+    const { campground } = req.body;
+    const camp = await Campground.findByIdAndUpdate(id, campground);
+    res.redirect(`/campgrounds/${id}`);
+})
+
+// Delete
+app.delete('/campgrounds/:id', async (req,res)=>{
+    const { id } = req.params;
+    const camp = await Campground.findByIdAndDelete(id);
+    res.redirect('/campgrounds');
+})
 
 app.listen(8080, () => {
     console.log('V Port 8080 online :)');

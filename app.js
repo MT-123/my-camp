@@ -4,10 +4,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Campground = require('./models/campground');// import the model
 const methodOverride = require('method-override');
+const ejsMate = require('ejs-mate');
 
 mongoose.connect('mongodb://localhost:27017/my-camp');
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', console.error.bind(console, 'X database connection error:'));
 db.once('open', () => {
     console.log('V Database connected :)');
 });
@@ -15,8 +16,19 @@ db.once('open', () => {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 
-app.use(express.urlencoded({ extended: true }));// for req.body
+app.engine('ejs',ejsMate);
+// use ejsMate instead of the default
+
+app.use(express.urlencoded({ extended: true })); // for req.body
 app.use(methodOverride('_method'));
+
+// try middleware
+app.use('/campgrounds/:id',(req,res,next)=>{
+    // middleware for url with "/campgrounds/" by any methods
+    // "/campgrounds/id/edit" will also trigger it
+    console.log('! id: ',req.params.id,' accessing!!!')
+    return next(); // use "return" instead of just "next()"" to make sure this middleware ends here
+});
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -76,6 +88,14 @@ app.delete('/campgrounds/:id', async (req,res)=>{
     const { id } = req.params;
     const camp = await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
+})
+
+// catch the url that missed the routes above
+app.use((req,res,next)=>{
+    res.status(404).send('Not found :\'( ');
+    // set status to 404
+    console.log('! request url out of routes!!!')
+    return next();
 })
 
 app.listen(8080, () => {

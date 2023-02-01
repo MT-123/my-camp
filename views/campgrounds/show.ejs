@@ -1,27 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show</title>
-</head>
-<body>
-    <h1><%= camp.title %></h1>
-    <div>
-        <ul>
-            <li>price: <%= camp.price %></li>
-            <li>description: <%= camp.description %></li>
-            <li>location: <%= camp.location %></li>
-        </ul>
+<% layout('./layouts/boilerplate')%>
+<div class="row justify-content-center">
+    <div class="col col-md-8">
+        <div class="card mb-3" >
+            <img src=<%= camp.image %> class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title"><%= camp.title %></h5>
+              
+              <p class="card-text">
+                <i><%= camp.location %></i>
+                <small class="card-text text-muted float-end">$<%= camp.price %>/night</small>
+            </p>
+              <p class="card-text"><%= camp.description %></p>
+              
+              <form class="card-text" action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
+                  <a href="/campgrounds" class="btn btn-primary float-end">Back to the list</a>
+                  <a href="/campgrounds/<%= camp._id %>/edit" class="btn btn-warning float-end  mx-2">Edit</a>
+                  <button class="btn btn-danger">delete</button>
+              </form>
+            </div>
+          </div>
+
     </div>
-    <a href="/campgrounds/<%= camp._id %>/edit">edit</a>
-
-    <form action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
-        <button>delete</button>
-    </form>
-
-
-    <a href="/campgrounds">all camps list</a>
-</body>
-</html>
+</div>

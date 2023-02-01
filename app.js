@@ -16,17 +16,17 @@ db.once('open', () => {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 
-app.engine('ejs',ejsMate);
+app.engine('ejs', ejsMate);
 // use ejsMate instead of the default
 
 app.use(express.urlencoded({ extended: true })); // for req.body
 app.use(methodOverride('_method'));
 
 // try middleware
-app.use('/campgrounds/:id',(req,res,next)=>{
+app.use('/campgrounds/:id', (req, res, next) => {
     // middleware for url with "/campgrounds/" by any methods
     // "/campgrounds/id/edit" will also trigger it
-    console.log('! id: ',req.params.id,' accessing!!!')
+    console.log('! id: ', req.params.id, ' accessing!!!')
     return next(); // use "return" instead of just "next()"" to make sure this middleware ends here
 });
 
@@ -76,7 +76,7 @@ app.get('/campgrounds/:id/edit', async (req, res) => {
 
 
 // Update 2/2
-app.put('/campgrounds/:id', async (req,res)=>{
+app.put('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
     const { campground } = req.body;
     const camp = await Campground.findByIdAndUpdate(id, campground);
@@ -84,14 +84,14 @@ app.put('/campgrounds/:id', async (req,res)=>{
 })
 
 // Delete
-app.delete('/campgrounds/:id', async (req,res)=>{
+app.delete('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
     const camp = await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
 })
 
 // catch the url that missed the routes above
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     res.status(404).send('Not found :\'( ');
     // set status to 404
     console.log('! request url out of routes!!!')

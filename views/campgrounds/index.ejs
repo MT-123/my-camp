@@ -1,20 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
+<% layout('./layouts/boilerplate')%>
     <h1>My Camp index</h1>
-    <a href="/">Home</a>
-    <a href="/campgrounds/new">add</a>
-    <ul>
-        <% let i=1;for (camp of camps) {%>
-            <li># <%=i%></li>
-            <li><b><a href="/campgrounds/<%=camp._id%>"><%=camp.title%></a></b></li>
-        <% i++} %>
-    </ul>
-</body>
-</html>
+
+    <% let i=1;for (camp of camps) {%>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src=<%=camp.image%> class="img-fluid">
+                </div>
+                <div class="col-md-8">
+                    <p># <%=i%> <b><%=camp.title%></b></p>
+                    <p>Description: <%= camp.description%></p>
+                    <a href="/campgrounds/<%=camp._id%>" class="btn btn-primary">Go to <%=camp.title%></a>
+                </div>
+            </div>
+        </div>
+    <% i++} %>

@@ -1,24 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Camp</title>
-</head>
-<body>
-    <h1>Add a new camp</h1>
-    <form action="/campgrounds" method="POST">
-        <label for="title">Title</label>
-        <input type="text" id="title" name="campground[title]"><br>
-        <label for="price">Price</label>
-        <input type="text" id="price" name="campground[price]"><br>
-        <label for="description">Description</label>
-        <input type="text" id="description" name="campground[description]"><br>
-        <label for="location">Location</label>
-        <input type="text" id="location" name="campground[location]"><br>
-        <button>submmit</button>
-    </form>
-    <a href="/campgrounds">back</a>
-</body>
-</html>
+<% layout('./layouts/boilerplate')%>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <h1 class="text-center">Add a new camp</h1>
+            <form action="/campgrounds" method="POST">
+                <label class="form-label mt-3" for="title">Title</label>
+                <input class="form-control border-dark-subtle" type="text" id="title" name="campground[title]">
+                
+                <label class="form-label mt-3" for="price">Price</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text border-dark-subtle">$</span>
+                    <input type="text" class="form-control border-dark-subtle" id="price" name="campground[price]">
+                </div>
+                
+                <label class="form-label mt-3" for="description">Description</label>
+                <div class="form-floating">
+                    <textarea class="form-control border-dark-subtle" id="description"
+                    name="campground[description]"></textarea>
+                    <label for="description">description</label>
+                </div>
+                
+                
+                
+                <label class="form-label mt-3" for="location">Location</label>
+                <input class="form-control border-dark-subtle" type="text" id="location" name="campground[location]">
+ 
+                <label class="form-label mt-3" for="image">Image url</label>
+                <input class="form-control border-dark-subtle" type="text" id="image" name="campground[image]">
+
+                <button class="btn btn-success mt-2 float-end">submmit</button>
+            </form>
+        </div>
+    </div>

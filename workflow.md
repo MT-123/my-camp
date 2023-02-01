@@ -17,4 +17,7 @@ C. create CRUD pages
 3. Create page: new.ejs
 4. Update page: update.ejs
 5. Delete page: delete.ejs
-6. 
+D. revise pages with boilerplate and bootstrap
+1. instal ejs mate
+2. create boilerplate
+3. revise the CRUD pages with bootstrap

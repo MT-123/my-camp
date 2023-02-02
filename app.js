@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const Campground = require('./models/campground');// import the model
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const { getgid } = require('process');
 
 mongoose.connect('mongodb://localhost:27017/my-camp');
 const db = mongoose.connection;
@@ -26,7 +27,7 @@ app.use(methodOverride('_method'));
 app.use('/campgrounds/:id', (req, res, next) => {
     // middleware for url with "/campgrounds/" by any methods
     // "/campgrounds/id/edit" will also trigger it
-    console.log('! id: ', req.params.id, ' accessing!!!')
+    console.log('! id: ', req.params.id, ' accessing!')
     return next(); // use "return" instead of just "next()"" to make sure this middleware ends here
 });
 
@@ -55,22 +56,30 @@ app.post('/campgrounds', async (req, res) => {
     //         location: campground.location,
     //     });
     // because campground is like this { title: 'newtitle', price: '33', description: 'addnew', location: 'uk' }
-    await newCamp.save();
+    await newCamp.save()
+        .catch((err) => console.log('X db save FAILED, error:\n', err));
     res.redirect(`/campgrounds/${newCamp.id}`);
 });
 
 // Read
-app.get('/campgrounds/:id', async (req, res) => {
+app.get('/campgrounds/:id', async (req, res, next) => {
     // name the url with hierarchy structure(home/index/element)
     const { id } = req.params;
-    const camp = await Campground.findById(id).exec();
-    res.render('./campgrounds/show', { camp })
+
+    try {
+        const camp = await Campground.findById(id).exec();
+        res.render('./campgrounds/show', { camp });
+    } catch (err) {
+        console.log('X find by id:', id, 'FAILED');
+        return next(err)
+    }
 });
 
 // Update 1/2
 app.get('/campgrounds/:id/edit', async (req, res) => {
     const { id } = req.params;
-    const camp = await Campground.findById(id).exec();
+    const camp = await Campground.findById(id).exec()
+        .catch((err) => console.log('X find campground for edit FAILED, id:', id, ', error:\n', err));
     res.render('./campgrounds/edit', { camp })
 });
 
@@ -79,23 +88,38 @@ app.get('/campgrounds/:id/edit', async (req, res) => {
 app.put('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
     const { campground } = req.body;
-    const camp = await Campground.findByIdAndUpdate(id, campground);
+    const camp = await Campground.findByIdAndUpdate(id, campground)
+        .catch((err) => console.log('X edit FAILED, id:', id, ', error:\n', err));
     res.redirect(`/campgrounds/${id}`);
 })
 
 // Delete
 app.delete('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
-    const camp = await Campground.findByIdAndDelete(id);
+    const camp = await Campground.findByIdAndDelete(id)
+        .catch((err) => console.log('X delete FAILED, id:', id, ', error:\n', err));
     res.redirect('/campgrounds');
+})
+
+
+app.get('/err', (req, res) => {
+    console.log('errrrrr')
+    getgid.gg();
 })
 
 // catch the url that missed the routes above
 app.use((req, res, next) => {
     res.status(404).send('Not found :\'( ');
     // set status to 404
-    console.log('! request url out of routes!!!')
+    const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    console.log('! request url out of routes!!! url:\n', fullUrl)
     return next();
+})
+
+
+app.use((err, req, res, next) => {
+    console.log('X ERROR:\n', err)
+    res.status(500).send(' Something broke! :(')
 })
 
 app.listen(8080, () => {

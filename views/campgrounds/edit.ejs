@@ -1,33 +1,51 @@
 <% layout('./layouts/boilerplate')%>
-<div class="row">
-    <div class="col-6 offset-3">
-        <h1 class="text-center">edit the camp</h1>
-        <form action="/campgrounds/<%= camp.id %>?_method=PUT" method="POST">
-            <label class="form-label mt-3" for="title">Title</label>
-            <input class="form-control border-dark-subtle" type="text" id="title" name="campground[title]" value="<%= camp.title %>">
-            
-            <label class="form-label mt-3" for="price">Price</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text border-dark-subtle">$</span>
-                <input type="text" class="form-control border-dark-subtle" id="price" name="campground[price]" value="<%= camp.price %>">
-            </div>
-            
-            <label class="form-label mt-3" for="description">Description</label>
-            <div class="form-floating">
-                <textarea class="form-control border-dark-subtle" id="description"
-                name="campground[description]"  ><%= camp.description %></textarea>
-            </div>
-            
-            
-            
-            <label class="form-label mt-3" for="location">Location</label>
-            <input class="form-control border-dark-subtle" type="text" id="location" name="campground[location]" value="<%= camp.location %>">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <h1 class="text-center">edit the camp</h1>
+            <form action="/campgrounds/<%= camp.id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+                <!-- novalidate to suppress the default validation-->
+                <label class="form-label mt-3" for="title">Title</label>
+                <input class="form-control border-dark-subtle" type="text" id="title" name="campground[title]"
+                    value="<%= camp.title %>" required>
+                <div class="invalid-feedback">
+                    required
+                </div>
 
-            <label class="form-label mt-3" for="image">Image url</label>
-            <input class="form-control border-dark-subtle" type="text" id="image" name="campground[image]" value="<%= camp.image %>">
+                <label class="form-label mt-3" for="price">Price</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text border-dark-subtle">$</span>
+                    <input type="text" class="form-control border-dark-subtle" id="price" name="campground[price]"
+                        value="<%= camp.price %>" required>
+                        <div class="invalid-feedback">
+                            required
+                        </div>
+                </div>
 
-            <button class="btn btn-success mt-2 float-end">submmit</button>
-        </form>
-        <a href="/campgrounds/<%= camp.id %>" class="btn btn-primary mt-2">Back</a>
+                <label class="form-label mt-3" for="description">Description</label>
+                <div class="form-floating">
+                    <textarea class="form-control border-dark-subtle" id="description" name="campground[description]" required><%= camp.description %></textarea>
+                    <div class="invalid-feedback">
+                        required
+                    </div>
+                </div>
+
+                <label class="form-label mt-3" for="location">Location</label>
+                <input class="form-control border-dark-subtle" type="text" id="location" name="campground[location]"
+                    value="<%= camp.location %>" required>
+                <div class="invalid-feedback">
+                    required
+                </div>
+
+                <label class="form-label mt-3" for="image">Image url</label>
+                <input class="form-control border-dark-subtle" type="text" id="image" name="campground[image]"
+                    value="<%= camp.image %>" required>
+                <div class="invalid-feedback">
+                    required
+                </div>
+
+                <button class="btn btn-success mt-2 float-end">submmit</button>
+            </form>
+            <a href="/campgrounds/<%= camp.id %>" class="btn btn-primary mt-2">Back</a>
+        </div>
     </div>
-</div>
+    <%- include("../partials/validationClient") %>

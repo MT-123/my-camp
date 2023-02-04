@@ -102,11 +102,6 @@ app.delete('/campgrounds/:id', async (req, res) => {
 })
 
 
-app.get('/err', (req, res) => {
-    console.log('errrrrr')
-    getgid.gg();
-})
-
 // catch the url that missed the routes above
 app.use((req, res, next) => {
     res.status(404).send('Not found :\'( ');

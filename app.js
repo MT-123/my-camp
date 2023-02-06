@@ -88,7 +88,6 @@ app.get('/campgrounds/:id', wrapAsync(async (req, res, next) => {
     // name the url with hierarchy structure(home/index/element)
     const { id } = req.params;
     const camp = await Campground.findById(id).populate('reviews').exec();
-    console.log(camp);
     res.render('./campgrounds/show', { camp });
 }));
 
@@ -125,6 +124,15 @@ app.post('/campgrounds/:id/reviews', validateReview, wrapAsync(async (req, res) 
     camp.reviews.push(newReview)
     await camp.save();
     await newReview.save();
+    res.redirect(`/campgrounds/${id}`);
+}))
+
+// delete a review
+app.delete('/campgrounds/:id/reviews/:reviewId',wrapAsync(async (req, res) => {
+    const { id, reviewId} = req.params;
+    await Campground.findByIdAndUpdate(id, {$pull:{reviews:reviewId}});
+    // remove the id matched review from the reviews array 
+    await Review.findByIdAndDelete(reviewId);
     res.redirect(`/campgrounds/${id}`);
 }))
 

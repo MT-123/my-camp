@@ -24,4 +24,8 @@ D. revise pages with boilerplate and bootstrap
 E. add error handler at client and server side
 1. use bootstrap form control class for client error handler
 2. create ExpressError class and wrapAsync fn for server error handler
- 
+3. create Joi schema and validation middleware fn for server side data validation
+F. add review feature
+1. create review DB model, Joi model, and add form to the show page
+2. make routes for post a review, add review to campgroung and review model
+3. make route for delete a review, remove remove from both models

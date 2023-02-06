@@ -10,9 +10,8 @@ module.exports.verifyCampSchema = Joi.object({
 });
 
 module.exports.verifyReviewSchema = Joi.object({
-    review: Joi.object({
+    reviews: Joi.object({
         rating: Joi.number().min(1).max(5).integer().required(),
         body: Joi.string().required()
     })
-
 })

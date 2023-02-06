@@ -26,13 +26,13 @@
             <form action="/campgrounds/<%= camp._id %>/reviews" method="POST" class="needs-validation" novalidate>
               <div class="mb-1">
                 <label for="rating">Rating</label>
-                <input type="range" id="rating" name="review[rating]" min="1" max="5"
+                <input type="range" id="rating" name="reviews[rating]" min="1" max="5"
                   oninput="this.nextElementSibling.value = this.value">
                 <output><b>3</b></output>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="body">Review</label>
-                <textarea class="form-control border-dark-subtle" id="body" name="review[body]" required></textarea>
+                <textarea class="form-control border-dark-subtle" id="body" name="reviews[body]" required></textarea>
                 <div class="invalid-feedback">
                   required
                 </div>
@@ -44,11 +44,11 @@
 
           <div class="mb-2">
             <h3>Reviews</h3>
-            <% for (campReview of camp.review) { %>
-              <p>Rating: <%= campReview.rating %>
+            <% for (review of camp.reviews) { %>
+              <p>Rating: <%= review.rating %>
               </p>
               <p class="card-text">
-                <%= campReview.body %>
+                <%= review.body %>
               </p>
               <hr>
               <% } %>
@@ -67,4 +67,3 @@
   </div>
 
   <%- include("../partials/validationClient") %>
-  

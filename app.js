@@ -5,9 +5,10 @@ const mongoose = require('mongoose');
 const Campground = require('./models/campground'); // import the model
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-// const { getgid } = require('process');
 const wrapAsync = require('./utils/wrapAsync'); // to catch error from the async fn
 const ExpressError = require('./utils/ExpressError');
+const { verifyCampSchema } = require('./schemas');
+// const { getgid } = require('process');
 
 mongoose.connect('mongodb://localhost:27017/my-camp');
 const db = mongoose.connection;
@@ -25,7 +26,7 @@ app.engine('ejs', ejsMate);
 app.use(express.urlencoded({ extended: true })); // for req.body
 app.use(methodOverride('_method'));
 
-
+// trace request for a campground
 app.use('/campgrounds/:id', (req, res, next) => {
     // middleware for url with "/campgrounds/" by any methods
     // "/campgrounds/id/edit" will also trigger it
@@ -33,13 +34,21 @@ app.use('/campgrounds/:id', (req, res, next) => {
     return next(); // use "return" instead of just "next()"" to make sure this middleware ends here
 });
 
+// middleware for data validation
+const validateCampground = (req, res, next) => {
+    const { error } = verifyCampSchema.validate(req.body);
+    if (error) { return next(new ExpressError(error.details.map(arr => arr.message), 400)) };
+    return next();
+}
+
+
 // homepage
 app.get('/', (req, res) => {
     res.render('home');
 })
 
 // campgrounds index page
-app.get('/campgrounds', wrapAsync( async (req, res) => {
+app.get('/campgrounds', wrapAsync(async (req, res) => {
     const camps = await Campground.find({}).exec();
     res.render('./campgrounds/index', { camps });
 }));
@@ -50,7 +59,7 @@ app.get('/campgrounds/new', (req, res) => {
 });
 
 // create
-app.post('/campgrounds', wrapAsync( async (req, res) => {
+app.post('/campgrounds', validateCampground, wrapAsync(async (req, res, next) => {
     const { campground } = req.body;
     const newCamp = new Campground(campground);
     // the above line is equal to followings
@@ -62,12 +71,12 @@ app.post('/campgrounds', wrapAsync( async (req, res) => {
     //     });
     // because campground is like this { title: 'newtitle', price: '33', description: 'addnew', location: 'uk' }
     await newCamp.save();
-        // .catch((err) => console.log('X db save FAILED, error:\n', err));
+    // .catch((err) => console.log('X db save FAILED, error:\n', err));
     res.redirect(`/campgrounds/${newCamp.id}`);
 }));
 
 // Read
-app.get('/campgrounds/:id', wrapAsync( async (req, res, next) => {
+app.get('/campgrounds/:id', wrapAsync(async (req, res, next) => {
     // name the url with hierarchy structure(home/index/element)
     const { id } = req.params;
     const camp = await Campground.findById(id).exec();
@@ -75,45 +84,45 @@ app.get('/campgrounds/:id', wrapAsync( async (req, res, next) => {
 }));
 
 // Update 1/2
-app.get('/campgrounds/:id/edit', wrapAsync( async (req, res) => {
+app.get('/campgrounds/:id/edit', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const camp = await Campground.findById(id).exec();
-        // .catch((err) => console.log('X find campground for edit FAILED, id:', id, ', error:\n', err));
+    // .catch((err) => console.log('X find campground for edit FAILED, id:', id, ', error:\n', err));
     res.render('./campgrounds/edit', { camp })
 }));
 
-
 // Update 2/2
-app.put('/campgrounds/:id', wrapAsync( async (req, res) => {
+app.put('/campgrounds/:id', validateCampground, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const { campground } = req.body;
     const camp = await Campground.findByIdAndUpdate(id, campground);
-        // .catch((err) => console.log('X edit FAILED, id:', id, ', error:\n', err));
+    // .catch((err) => console.log('X edit FAILED, id:', id, ', error:\n', err));
     res.redirect(`/campgrounds/${id}`);
 }));
 
 // Delete
-app.delete('/campgrounds/:id', wrapAsync( async (req, res) => {
+app.delete('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const camp = await Campground.findByIdAndDelete(id);
-        // .catch((err) => console.log('X delete FAILED, id:', id, ', error:\n', err));
+    // .catch((err) => console.log('X delete FAILED, id:', id, ', error:\n', err));
     res.redirect('/campgrounds');
 }));
 
 
-app.all('*', (req,res,next)=>{
+
+// catch the unexpected url
+app.all('*', (req, res, next) => {
     const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     console.log('! request url out of routes!!! url:\n', fullUrl)
-    return next(new ExpressError('No such link!',404));
+    return next(new ExpressError('No such link!', 404));
 })
-
 
 // catch error
 app.use((err, req, res, next) => {
-    const {statusCode = 500, message = "Internal issue :'("} = err;
+    const { statusCode = 500, message = "Internal issue :'(" } = err;
     console.log('X ERROR:\n', err)
     // res.status(statusCode).send(`Something went wrong! :( <br>  ${message}`)
-    res.status(statusCode).render('error',{statusCode, message})
+    res.status(statusCode).render('error', { statusCode, message })
 })
 
 app.listen(8080, () => {

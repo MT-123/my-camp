@@ -6,6 +6,8 @@ const Campground = require('./models/campground');// import the model
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const { getgid } = require('process');
+const wrapAsync = require('./utils/wrapAsync');
+const ExpressError = require('./utils/ExpressError');
 
 mongoose.connect('mongodb://localhost:27017/my-camp');
 const db = mongoose.connection;

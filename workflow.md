@@ -21,3 +21,7 @@ D. revise pages with boilerplate and bootstrap
 1. instal ejs mate
 2. create boilerplate
 3. revise the CRUD pages with bootstrap
+E. add error handler at client and server side
+1. use bootstrap form control class for client error handler
+2. create ExpressError class and wrapAsync fn for server error handler
+ 

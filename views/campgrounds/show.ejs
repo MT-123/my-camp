@@ -1,24 +1,70 @@
 <% layout('./layouts/boilerplate')%>
-<div class="row justify-content-center">
+
+  <div class="row justify-content-center">
     <div class="col col-md-8">
-        <div class="card mb-3" >
-            <img src=<%= camp.image %> class="card-img-top">
-            <div class="card-body">
-              <h5 class="card-title"><%= camp.title %></h5>
-              
-              <p class="card-text">
-                <i><%= camp.location %></i>
-                <small class="card-text text-muted float-end">$<%= camp.price %>/night</small>
-            </p>
-              <p class="card-text"><%= camp.description %></p>
-              
-              <form class="card-text" action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
-                  <a href="/campgrounds" class="btn btn-primary float-end">Back to the list</a>
-                  <a href="/campgrounds/<%= camp._id %>/edit" class="btn btn-warning float-end  mx-2">Edit</a>
-                  <button class="btn btn-danger">delete</button>
-              </form>
-            </div>
+      <div class="card mb-3">
+        <img src=<%=camp.image %> class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">
+            <%= camp.title %>
+          </h5>
+
+          <p class="card-text">
+            <i>
+              <%= camp.location %>
+            </i>
+            <small class="card-text text-muted float-end">$<%= camp.price %>/night</small>
+          </p>
+          <p class="card-text">
+            <%= camp.description %>
+          </p>
+          <hr>
+
+
+          <div>
+            <h3>Make your review</h3>
+            <form action="/campgrounds/<%= camp._id %>/reviews" method="POST" class="needs-validation" novalidate>
+              <div class="mb-1">
+                <label for="rating">Rating</label>
+                <input type="range" id="rating" name="review[rating]" min="1" max="5"
+                  oninput="this.nextElementSibling.value = this.value">
+                <output><b>3</b></output>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="body">Review</label>
+                <textarea class="form-control border-dark-subtle" id="body" name="review[body]" required></textarea>
+                <div class="invalid-feedback">
+                  required
+                </div>
+              </div>
+              <button class="btn btn-success mb-2 float-end">Submit</button>
+            </form>
+            <br>
           </div>
 
+          <div class="mb-2">
+            <h3>Reviews</h3>
+            <% for (campReview of camp.review) { %>
+              <p>Rating: <%= campReview.rating %>
+              </p>
+              <p class="card-text">
+                <%= campReview.body %>
+              </p>
+              <hr>
+              <% } %>
+          </div>
+
+        </div>
+
+        <form class="card-text" action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
+          <h3>Campground actions</h3>
+          <a href="/campgrounds" class="btn btn-primary float-end">Back to the list</a>
+          <a href="/campgrounds/<%= camp._id %>/edit" class="btn btn-warning float-end  mx-2">Edit</a>
+          <button class="btn btn-danger">delete</button>
+        </form>
+      </div>
     </div>
-</div>
+  </div>
+
+  <%- include("../partials/validationClient") %>
+  

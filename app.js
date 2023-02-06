@@ -3,12 +3,14 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const Campground = require('./models/campground'); // import the model
+const Review = require('./models/reviews');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const wrapAsync = require('./utils/wrapAsync'); // to catch error from the async fn
 const ExpressError = require('./utils/ExpressError');
-const { verifyCampSchema } = require('./schemas');
+const { verifyCampSchema, verifyReviewSchema } = require('./schemas');
 // const { getgid } = require('process');
+
 
 mongoose.connect('mongodb://localhost:27017/my-camp');
 const db = mongoose.connection;
@@ -34,9 +36,15 @@ app.use('/campgrounds/:id', (req, res, next) => {
     return next(); // use "return" instead of just "next()"" to make sure this middleware ends here
 });
 
-// middleware for data validation
+// middleware fn for data validation
 const validateCampground = (req, res, next) => {
     const { error } = verifyCampSchema.validate(req.body);
+    if (error) { return next(new ExpressError(error.details.map(arr => arr.message), 400)) };
+    return next();
+}
+
+const validateReview = (req, res, next) => {
+    const { error } = verifyReviewSchema.validate(req.body);
     if (error) { return next(new ExpressError(error.details.map(arr => arr.message), 400)) };
     return next();
 }
@@ -79,7 +87,7 @@ app.post('/campgrounds', validateCampground, wrapAsync(async (req, res, next) =>
 app.get('/campgrounds/:id', wrapAsync(async (req, res, next) => {
     // name the url with hierarchy structure(home/index/element)
     const { id } = req.params;
-    const camp = await Campground.findById(id).exec();
+    const camp = await Campground.findById(id).populate('review').exec();
     res.render('./campgrounds/show', { camp });
 }));
 
@@ -95,7 +103,7 @@ app.get('/campgrounds/:id/edit', wrapAsync(async (req, res) => {
 app.put('/campgrounds/:id', validateCampground, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const { campground } = req.body;
-    const camp = await Campground.findByIdAndUpdate(id, campground);
+    await Campground.findByIdAndUpdate(id, campground);
     // .catch((err) => console.log('X edit FAILED, id:', id, ', error:\n', err));
     res.redirect(`/campgrounds/${id}`);
 }));
@@ -103,11 +111,22 @@ app.put('/campgrounds/:id', validateCampground, wrapAsync(async (req, res) => {
 // Delete
 app.delete('/campgrounds/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const camp = await Campground.findByIdAndDelete(id);
+    await Campground.findByIdAndDelete(id);
     // .catch((err) => console.log('X delete FAILED, id:', id, ', error:\n', err));
     res.redirect('/campgrounds');
 }));
 
+// post a review
+app.post('/campgrounds/:id/reviews', validateReview, wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const { review } = req.body;
+    const newReview = new Review(review);
+    const camp = await Campground.findById(id);
+    camp.review.push(newReview)
+    await camp.save();
+    await newReview.save();
+    res.redirect(`/campgrounds/${id}`);
+}))
 
 
 // catch the unexpected url
@@ -124,6 +143,7 @@ app.use((err, req, res, next) => {
     // res.status(statusCode).send(`Something went wrong! :( <br>  ${message}`)
     res.status(statusCode).render('error', { statusCode, message })
 })
+
 
 app.listen(8080, () => {
     console.log('V Port 8080 online :)');

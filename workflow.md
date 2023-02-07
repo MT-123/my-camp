@@ -29,3 +29,4 @@ F. add review feature
 1. create review DB model, Joi model, and add form to the show page
 2. make routes for post a review, add review to campgroung and review model
 3. make route for delete a review, remove remove from both models
+H. refactor the router by router

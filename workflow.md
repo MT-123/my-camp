@@ -31,3 +31,4 @@ F. add review feature
 3. make route for delete a review, remove remove from both models
 4. make delete middleware to delete reviews as the related campground is deleted
 G. refactor the routes and middlewares by router
+1. create router files

@@ -3,6 +3,7 @@ const router = express.Router();
 const Campground = require('../models/campground'); // import the model
 const wrapAsync = require('../utils/wrapAsync'); // to catch error from the async fn
 const { verifyCampSchema } = require('../schemas');
+const ExpressError = require('../utils/ExpressError');
 
 
 // middleware fn for data validation

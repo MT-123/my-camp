@@ -2,14 +2,15 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
-const Campground = require('./models/campground'); // import the model
-const Review = require('./models/reviews');
+// const Campground = require('./models/campground'); // import the model
+// const Review = require('./models/reviews');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const wrapAsync = require('./utils/wrapAsync'); // to catch error from the async fn
+// const wrapAsync = require('./utils/wrapAsync'); // to catch error from the async fn
 const ExpressError = require('./utils/ExpressError');
-const { verifyCampSchema, verifyReviewSchema } = require('./schemas');
+// const { verifyCampSchema, verifyReviewSchema } = require('./schemas');
 const campgrounds = require('./routes/campgrounds')
+const reviews = require('./routes/reviews')
 // const { getgid } = require('process');
 
 
@@ -37,40 +38,14 @@ app.use('/campgrounds/:id', (req, res, next) => {
     return next(); // use "return" instead of just "next()"" to make sure this middleware ends here
 });
 
-// middleware fn for data validation
-const validateReview = (req, res, next) => {
-    const { error } = verifyReviewSchema.validate(req.body);
-    if (error) { return next(new ExpressError(error.details.map(arr => arr.message), 400)) };
-    return next();
-}
-
-app.use('/campgrounds',campgrounds)
+// routers
+app.use('/campgrounds',campgrounds);
+app.use('/campgrounds/:id/reviews', reviews);
 
 // homepage
 app.get('/', (req, res) => {
     res.render('home');
 })
-
-
-// post a review
-app.post('/campgrounds/:id/reviews', validateReview, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const newReview = new Review(req.body.reviews);
-    const camp = await Campground.findById(id);
-    camp.reviews.push(newReview)
-    await camp.save();
-    await newReview.save();
-    res.redirect(`/campgrounds/${id}`);
-}))
-
-// delete a review
-app.delete('/campgrounds/:id/reviews/:reviewId',wrapAsync(async (req, res) => {
-    const { id, reviewId} = req.params;
-    await Campground.findByIdAndUpdate(id, {$pull:{reviews:reviewId}});
-    // remove the id matched review from the reviews array 
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/campgrounds/${id}`);
-}))
 
 
 // catch the unexpected url

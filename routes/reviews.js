@@ -13,7 +13,6 @@ const validateReview = (req, res, next) => {
     return next();
 }
 
-
 // post a review
 router.post('/', validateReview, wrapAsync(async (req, res) => {
     const { id } = req.params;

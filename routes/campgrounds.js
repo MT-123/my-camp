@@ -5,7 +5,6 @@ const wrapAsync = require('../utils/wrapAsync'); // to catch error from the asyn
 const { verifyCampSchema } = require('../schemas');
 const ExpressError = require('../utils/ExpressError');
 
-
 // middleware fn for data validation
 const validateCampground = (req, res, next) => {
     const { error } = verifyCampSchema.validate(req.body);

@@ -39,5 +39,8 @@ H. add session and flash for success and error events
 3. create flash partials
 I. Authetication
 1. install 3 passport packages passport passport-local passport-local-mongoose
-2. create user model and register with passport
+2. create user model and middleware for passport
+3. create user route, registration page, and feature of create a user to users DB
+4. create login route, page and login authentication with passport middleware
+
 

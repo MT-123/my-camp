@@ -12,6 +12,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const localStategy = require('passport-local');
 const User = require('./models/user');
+const usersRoute = require('./routes/users');
 
 const sessionConfig = {
     secret: 'temporary',
@@ -72,20 +73,22 @@ app.use((req, res, next) => {
 })
 
 // authentication page
-app.get('/user',async(req,res,next)=>{
-    const applicationForm={
-        username:'Paul',
-        email : 'Paul@gmail.com'
-    }
-    const password = 'asdf'
-    const user= new User(applicationForm);
-    const newUser = await User.register(user,password);//(mongoose document,password)
-    res.send(newUser);
-})
+// app.get('/user',async(req,res,next)=>{
+//     const registerForm={
+//         username:'Paul',
+//         email : 'Paul@gmail.com'
+//     } 
+//     const password = 'asdf'
+//     const user= new User(registerForm);
+//     const newUser = await User.register(user,password);
+//     res.send(newUser);
+// })
+
 
 // routers
 app.use('/campgrounds', campgroundsRoute);
 app.use('/campgrounds/:id/reviews', reviewsRoute);
+app.use('/',usersRoute);
 
 // homepage
 app.get('/', (req, res) => {

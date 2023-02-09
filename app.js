@@ -5,19 +5,20 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
-const campgrounds = require('./routes/campgrounds');
-const reviews = require('./routes/reviews');
+const campgroundsRoute = require('./routes/campgrounds');
+const reviewsRoute = require('./routes/reviews');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const localStategy = require('passport-local');
+const User = require('./models/user');
 
 const sessionConfig = {
     secret: 'temporary',
-    // to suppress warning
-    resave: false,
-    saveUninitialized: true,
-    // setup cookies
-    cookie: {
-        maxAge:1000*60*30,//expire in 30 min
+    resave: false, // to suppress warning
+    saveUninitialized: true, // to suppress warning
+    cookie: { // setup cookies
+        maxAge: 1000 * 60 * 30,//expire in 30 min
         httpOnly: true // for web safety
     }
 }
@@ -43,6 +44,16 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+//the passport.session must be after session middleware
+passport.use(new localStategy(User.authenticate()));
+// use local authentication with user model
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+//to store and remove the sessions of logged users
+
 
 // log request for a campground
 app.use('/campgrounds/:id', (req, res, next) => {
@@ -52,18 +63,29 @@ app.use('/campgrounds/:id', (req, res, next) => {
     // use "return" instead of just "next()"" to make sure this middleware ends here
 });
 
-
 // flash
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     // make every page have access to flash message
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     return next();
 })
 
+// authentication page
+app.get('/user',async(req,res,next)=>{
+    const applicationForm={
+        username:'Paul',
+        email : 'Paul@gmail.com'
+    }
+    const password = 'asdf'
+    const user= new User(applicationForm);
+    const newUser = await User.register(user,password);//(mongoose document,password)
+    res.send(newUser);
+})
+
 // routers
-app.use('/campgrounds', campgrounds);
-app.use('/campgrounds/:id/reviews', reviews);
+app.use('/campgrounds', campgroundsRoute);
+app.use('/campgrounds/:id/reviews', reviewsRoute);
 
 // homepage
 app.get('/', (req, res) => {

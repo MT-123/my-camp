@@ -37,5 +37,7 @@ H. add session and flash for success and error events
 1. install express-session and connect-flash by npm
 2. setup the session option and add flash message to routes
 3. create flash partials
-
+I. Authetication
+1. install 3 passport packages passport passport-local passport-local-mongoose
+2. create user model and register with passport
 

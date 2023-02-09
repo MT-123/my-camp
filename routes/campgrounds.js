@@ -14,7 +14,7 @@ const validateCampground = (req, res, next) => {
 
 // campgrounds index page
 router.get('/', wrapAsync(async (req, res) => {
-    const camps = await Campground.find({}).exec();
+    const camps = await Campground.find({});
     res.render('./campgrounds/index', { camps });
 }));
 
@@ -36,7 +36,7 @@ router.post('/', validateCampground, wrapAsync(async (req, res, next) => {
     //     });
     // because campground is like this { title: 'newtitle', price: '33', description: 'addnew', location: 'uk' }
     await newCamp.save();
-    // .catch((err) => console.log('X db save FAILED, error:\n', err));
+    req.flash('success', 'A new campground added!');// push a flash message
     res.redirect(`/campgrounds/${newCamp.id}`);
 }));
 
@@ -44,15 +44,23 @@ router.post('/', validateCampground, wrapAsync(async (req, res, next) => {
 router.get('/:id', wrapAsync(async (req, res, next) => {
     // name the url with hierarchy structure(home/index/element)
     const { id } = req.params;
-    const camp = await Campground.findById(id).populate('reviews').exec();
+    const camp = await Campground.findById(id).populate('reviews');
+    if (!camp) {
+        req.flash('error', 'no such campground!');
+        res.redirect('/campgrounds');
+    }
     res.render('./campgrounds/show', { camp });
 }));
+
 
 // Update 1/2
 router.get('/:id/edit', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const camp = await Campground.findById(id).exec();
-    // .catch((err) => console.log('X find campground for edit FAILED, id:', id, ', error:\n', err));
+    const camp = await Campground.findById(id);
+    if (!camp) {
+        req.flash('error', 'no such campground!');
+        res.redirect('/campgrounds');
+    }
     res.render('./campgrounds/edit', { camp })
 }));
 
@@ -61,15 +69,15 @@ router.put('/:id', validateCampground, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const { campground } = req.body;
     await Campground.findByIdAndUpdate(id, campground);
-    // .catch((err) => console.log('X edit FAILED, id:', id, ', error:\n', err));
+    req.flash('success', 'The campground updated!');
     res.redirect(`/campgrounds/${id}`);
 }));
 
 // Delete
 router.delete('/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
-    await Campground.findByIdAndDelete(id);
-    // .catch((err) => console.log('X delete FAILED, id:', id, ', error:\n', err));
+    const camp = await Campground.findByIdAndDelete(id);
+    req.flash('success', `The campground ${camp.title} deleted!`);
     res.redirect('/campgrounds');
 }));
 

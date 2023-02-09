@@ -7,6 +7,20 @@ const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
 const campgrounds = require('./routes/campgrounds');
 const reviews = require('./routes/reviews');
+const session = require('express-session');
+const flash = require('connect-flash');
+
+const sessionConfig = {
+    secret: 'temporary',
+    // to suppress warning
+    resave: false,
+    saveUninitialized: true,
+    // setup cookies
+    cookie: {
+        maxAge:1000*60*30,//expire in 30 min
+        httpOnly: true // for web safety
+    }
+}
 
 mongoose.set('strictQuery', true); // to supress mongoose warning
 mongoose.connect('mongodb://localhost:27017/my-camp');
@@ -26,14 +40,26 @@ app.use(express.urlencoded({ extended: true })); // for req.body
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, '/public')));
 //set up path for static files at the public folder
+app.use(session(sessionConfig));
+app.use(flash());
 
-// trace request for a campground
+
+// log request for a campground
 app.use('/campgrounds/:id', (req, res, next) => {
     // middleware for url with "/campgrounds/" by any methods
     console.log('! id: ', req.params.id, ' accessing!')
-    return next(); 
+    return next();
     // use "return" instead of just "next()"" to make sure this middleware ends here
 });
+
+
+// flash
+app.use((req,res,next)=>{
+    // make every page have access to flash message
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    return next();
+})
 
 // routers
 app.use('/campgrounds', campgrounds);
@@ -54,7 +80,7 @@ app.all('*', (req, res, next) => {
 // catch error
 app.use((err, req, res, next) => {
     const { statusCode = 500, message = "Internal issue :'(" } = err;
-    console.log('X ERROR:\n', err)
+    console.log('X ERROR:\n', err);
     res.status(statusCode).render('error', { statusCode, message })
 })
 

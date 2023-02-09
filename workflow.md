@@ -33,4 +33,9 @@ F. add review feature
 G. refactor the routes and middlewares by router
 1. create router files for campgrounds ans reviews
 2. set up the middleware for the routers
-H. 
+H. add session and flash for success and error events
+1. install express-session and connect-flash by npm
+2. setup the session option and add flash message to routes
+3. create flash partials
+
+

@@ -1,0 +1,18 @@
+#entryButton {
+    font-size: 1.8rem;
+    color: rgba(108, 139, 176, 0.877);
+    background: none;
+    position: inherit;
+    border: 5px solid rgb(211 175 43 / 77%);
+    padding: .2em .5em;
+    transition: color 1s, border 1s, box-shadow 1s, transform 1s;
+}
+
+#entryButton:hover {
+    color: rgba(143, 185, 237, 0.937);
+    border: 5px solid rgba(238, 197, 49, 0.935);
+    transform: translateY(-.5em);
+    box-shadow: 0 .5em .5em -.15em rgba(238, 197, 49, 0.935);
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    cursor: pointer
+}

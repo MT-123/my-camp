@@ -47,7 +47,8 @@ router.get('/:id', wrapAsync(async (req, res, next) => {
     const camp = await Campground.findById(id).populate('reviews');
     if (!camp) {
         req.flash('error', 'no such campground!');
-        res.redirect('/campgrounds');
+        return res.redirect('/campgrounds');
+        // use return to end the code here to aviod execute the render below
     }
     res.render('./campgrounds/show', { camp });
 }));
@@ -59,7 +60,7 @@ router.get('/:id/edit', wrapAsync(async (req, res) => {
     const camp = await Campground.findById(id);
     if (!camp) {
         req.flash('error', 'no such campground!');
-        res.redirect('/campgrounds');
+        return res.redirect('/campgrounds');
     }
     res.render('./campgrounds/edit', { camp })
 }));

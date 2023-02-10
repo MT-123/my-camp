@@ -38,11 +38,15 @@ router.get('/login', (req, res) => {
 
 // login authenticate
 router.post('/login',
-    passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
+    passport.authenticate('local', { failureRedirect: '/login', failureFlash: true , keepSessionInfo: true}),
     // this middleware will find req.body.username and req.body.passsword by default
+    // keepSessionInfo must set to true to avoid req.session.returnTo being cleared
     (req, res) => {
         req.flash('success', `Hi ${req.body.username}, welcome back.`);
-        res.redirect('/campgrounds');
+        const redirectPath = req.session.returnTo || '/campgrounds';
+        // retrieve the original url
+        delete req.session.returnTo;
+        res.redirect(redirectPath);
     })
 
 // logout

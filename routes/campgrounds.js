@@ -4,7 +4,7 @@ const Campground = require('../models/campground'); // import the model
 const wrapAsync = require('../utils/wrapAsync'); // to catch error from the async fn
 const { verifyCampSchema } = require('../schemas');
 const ExpressError = require('../utils/ExpressError');
-const isLoggedIn = require('../loginMiddleware');
+const isLoggedIn = require('../isLoggedIn');
 
 // middleware fn for data validation
 const validateCampground = (req, res, next) => {

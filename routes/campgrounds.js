@@ -4,6 +4,7 @@ const Campground = require('../models/campground'); // import the model
 const wrapAsync = require('../utils/wrapAsync'); // to catch error from the async fn
 const { verifyCampSchema } = require('../schemas');
 const ExpressError = require('../utils/ExpressError');
+const isLoggedIn = require('../loginMiddleware');
 
 // middleware fn for data validation
 const validateCampground = (req, res, next) => {
@@ -19,12 +20,12 @@ router.get('/', wrapAsync(async (req, res) => {
 }));
 
 // new campground page
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('./campgrounds/new');
 });
 
 // create
-router.post('/', validateCampground, wrapAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, validateCampground, wrapAsync(async (req, res, next) => {
     const { campground } = req.body;
     const newCamp = new Campground(campground);
     // the above line is equal to followings
@@ -55,7 +56,7 @@ router.get('/:id', wrapAsync(async (req, res, next) => {
 
 
 // Update 1/2
-router.get('/:id/edit', wrapAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const camp = await Campground.findById(id);
     if (!camp) {
@@ -66,7 +67,7 @@ router.get('/:id/edit', wrapAsync(async (req, res) => {
 }));
 
 // Update 2/2
-router.put('/:id', validateCampground, wrapAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, validateCampground, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const { campground } = req.body;
     await Campground.findByIdAndUpdate(id, campground);
@@ -75,7 +76,7 @@ router.put('/:id', validateCampground, wrapAsync(async (req, res) => {
 }));
 
 // Delete
-router.delete('/:id', wrapAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const camp = await Campground.findByIdAndDelete(id);
     req.flash('success', `The campground ${camp.title} deleted!`);

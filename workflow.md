@@ -42,5 +42,6 @@ I. Authetication
 2. create user model and middleware for passport
 3. create user route, registration page, and feature of create a user to users DB
 4. create login route, page and login authentication with passport middleware
+5. create log out route and pages
 
 

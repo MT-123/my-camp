@@ -64,11 +64,13 @@ app.use('/campgrounds/:id', (req, res, next) => {
     // use "return" instead of just "next()"" to make sure this middleware ends here
 });
 
-// flash
+// objects access to every page
 app.use((req, res, next) => {
-    // make every page have access to flash message
+    // flash
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
+    // login status
+    res.locals.currentUser = req.user;
     return next();
 })
 

@@ -3,14 +3,15 @@ const router = express.Router({ mergeParams: true });// make the whole url avail
 const Campground = require('../models/campground'); // import the model
 const Review = require('../models/reviews');
 const wrapAsync = require('../utils/wrapAsync'); // to catch error from the async fn
-const { validateReview } = require('../middleware');
+const { validateReview, isLoggedIn } = require('../middleware');
 
 
 // post a review
-router.post('/', validateReview, wrapAsync(async (req, res) => {
+router.post('/', isLoggedIn, validateReview, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const newReview = new Review(req.body.reviews);
     const camp = await Campground.findById(id);
+    newReview.author = req.user._id;
     camp.reviews.push(newReview);
     await camp.save();
     await newReview.save();

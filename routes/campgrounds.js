@@ -19,9 +19,8 @@ router.get('/new', isLoggedIn, (req, res) => {
 // create
 router.post('/', isLoggedIn, validateCampground, wrapAsync(async (req, res, next) => {
     const { campground } = req.body;
-    const author = req.user._id; // req.user is created by passport after login done
     const newCamp = new Campground(campground);
-    newCamp.author = author;
+    newCamp.author = req.user._id;// req.user is created by passport after login done
     await newCamp.save();
     req.flash('success', 'A new campground added!');// push a flash message
     res.redirect(`/campgrounds/${newCamp.id}`);
@@ -31,8 +30,14 @@ router.post('/', isLoggedIn, validateCampground, wrapAsync(async (req, res, next
 router.get('/:id', wrapAsync(async (req, res, next) => {
     // name the url with hierarchy structure(home/index/element)
     const { id } = req.params;
-    const camp = await Campground.findById(id).populate('reviews').populate('author', 'username');
+    const camp = await Campground.findById(id).populate({
+        path: 'reviews',
+        populate: {
+            path: 'author'
+        }
+    }).populate('author', 'username');
     // only populate the author.username for user private protection
+
     if (!camp) {
         req.flash('error', 'no such campground!');
         return res.redirect('/campgrounds');
@@ -59,7 +64,7 @@ router.put('/:id', isLoggedIn, isAuthor, validateCampground, wrapAsync(async (re
     const { campground } = req.body;
     await Campground.findByIdAndUpdate(id, campground);
     req.flash('success', 'The campground updated!');
-    return res.redirect(`/campgrounds/${id}`);
+    res.redirect(`/campgrounds/${id}`);
 }));
 
 // Delete

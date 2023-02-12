@@ -74,18 +74,6 @@ app.use((req, res, next) => {
     return next();
 })
 
-// authentication page
-// app.get('/user',async(req,res,next)=>{
-//     const registerForm={
-//         username:'Paul',
-//         email : 'Paul@gmail.com'
-//     } 
-//     const password = 'asdf'
-//     const user= new User(registerForm);
-//     const newUser = await User.register(user,password);
-//     res.send(newUser);
-// })
-
 
 // routers
 app.use('/campgrounds', campgroundsRoute);

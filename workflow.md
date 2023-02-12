@@ -43,5 +43,8 @@ I. Authetication
 3. create user route, registration page, and feature of create a user to users DB
 4. create login route, page and login authentication with passport middleware
 5. create log out route and pages
+6. add feature: redirect to previous page after login
+7. add feature: campgrounds add author data and show author on show page
+8. check authorization before create, edit, and delete
 
 

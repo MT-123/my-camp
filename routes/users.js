@@ -46,6 +46,7 @@ router.post('/login',
         const redirectPath = req.session.returnTo || '/campgrounds';
         // retrieve the original url
         delete req.session.returnTo;
+        // delete the returnTo property
         res.redirect(redirectPath);
     })
 

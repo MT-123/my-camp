@@ -21,21 +21,16 @@ router.get('/', wrapAsync(async (req, res) => {
 
 // new campground page
 router.get('/new', isLoggedIn, (req, res) => {
+    console.log(req)
     res.render('./campgrounds/new');
 });
 
 // create
 router.post('/', isLoggedIn, validateCampground, wrapAsync(async (req, res, next) => {
     const { campground } = req.body;
+    const author = req.user._id; // req.user is created by passport after login done
     const newCamp = new Campground(campground);
-    // the above line is equal to followings
-    // const newCamp = new Campground({
-    //         title: campground.title,
-    //         price: campground.price,
-    //         description: campground.description,
-    //         location: campground.location,
-    //     });
-    // because campground is like this { title: 'newtitle', price: '33', description: 'addnew', location: 'uk' }
+    newCamp.author = author;
     await newCamp.save();
     req.flash('success', 'A new campground added!');// push a flash message
     res.redirect(`/campgrounds/${newCamp.id}`);
@@ -45,7 +40,8 @@ router.post('/', isLoggedIn, validateCampground, wrapAsync(async (req, res, next
 router.get('/:id', wrapAsync(async (req, res, next) => {
     // name the url with hierarchy structure(home/index/element)
     const { id } = req.params;
-    const camp = await Campground.findById(id).populate('reviews');
+    const camp = await Campground.findById(id).populate('reviews').populate('author','username');
+    // only populate the author.username for user private protection
     if (!camp) {
         req.flash('error', 'no such campground!');
         return res.redirect('/campgrounds');
@@ -70,9 +66,14 @@ router.get('/:id/edit', isLoggedIn, wrapAsync(async (req, res) => {
 router.put('/:id', isLoggedIn, validateCampground, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const { campground } = req.body;
-    await Campground.findByIdAndUpdate(id, campground);
-    req.flash('success', 'The campground updated!');
-    res.redirect(`/campgrounds/${id}`);
+    const camp = await Campground.findById(id).populate('author');
+    if (camp.author.equals(req.user)){
+        await Campground.findByIdAndUpdate(id, campground);
+        req.flash('success', 'The campground updated!');
+        return res.redirect(`/campgrounds/${id}`);
+    }
+    req.flash('error', 'not the author!');
+    return res.redirect(`/campgrounds/${id}`);
 }));
 
 // Delete

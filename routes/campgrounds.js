@@ -13,6 +13,17 @@ const validateCampground = (req, res, next) => {
     return next();
 }
 
+// middleware for checking the user is the author
+const isAuthor = async (req, res, next) => {
+    const { id } = req.params;
+    const camp = await Campground.findById(id);
+    if (!camp.author.equals(req.user._id)) {
+        req.flash('error', 'not the author!');
+        return res.redirect(`/campgrounds/${id}`);
+    }
+    return next();
+}
+
 // campgrounds index page
 router.get('/', wrapAsync(async (req, res) => {
     const camps = await Campground.find({});
@@ -40,7 +51,7 @@ router.post('/', isLoggedIn, validateCampground, wrapAsync(async (req, res, next
 router.get('/:id', wrapAsync(async (req, res, next) => {
     // name the url with hierarchy structure(home/index/element)
     const { id } = req.params;
-    const camp = await Campground.findById(id).populate('reviews').populate('author','username');
+    const camp = await Campground.findById(id).populate('reviews').populate('author', 'username');
     // only populate the author.username for user private protection
     if (!camp) {
         req.flash('error', 'no such campground!');
@@ -63,21 +74,16 @@ router.get('/:id/edit', isLoggedIn, wrapAsync(async (req, res) => {
 }));
 
 // Update 2/2
-router.put('/:id', isLoggedIn, validateCampground, wrapAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, isAuthor, validateCampground, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const { campground } = req.body;
-    const camp = await Campground.findById(id).populate('author');
-    if (camp.author.equals(req.user)){
-        await Campground.findByIdAndUpdate(id, campground);
-        req.flash('success', 'The campground updated!');
-        return res.redirect(`/campgrounds/${id}`);
-    }
-    req.flash('error', 'not the author!');
+    await Campground.findByIdAndUpdate(id, campground);
+    req.flash('success', 'The campground updated!');
     return res.redirect(`/campgrounds/${id}`);
 }));
 
 // Delete
-router.delete('/:id', isLoggedIn, wrapAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const camp = await Campground.findByIdAndDelete(id);
     req.flash('success', `The campground ${camp.title} deleted!`);

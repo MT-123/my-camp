@@ -46,5 +46,4 @@ I. Authetication
 6. add feature: redirect to previous page after login
 7. add feature: campgrounds add author data and show author on show page
 8. check authorization before create, edit, and delete
-
-
+9. add author data to the review and check the authorization for create and delete

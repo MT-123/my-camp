@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });// make the whole url avail
 const Campground = require('../models/campground'); // import the model
 const Review = require('../models/reviews');
 const wrapAsync = require('../utils/wrapAsync'); // to catch error from the async fn
-const { validateReview, isLoggedIn } = require('../middleware');
+const { validateReview, isLoggedIn, isReviewAuthor } = require('../middleware');
 
 
 // post a review
@@ -19,8 +19,9 @@ router.post('/', isLoggedIn, validateReview, wrapAsync(async (req, res) => {
     res.redirect(`/campgrounds/${id}`);
 }))
 
+
 // delete a review
-router.delete('/:reviewId', wrapAsync(async (req, res) => {
+router.delete('/:reviewId', isReviewAuthor, wrapAsync(async (req, res) => {
     const { id, reviewId } = req.params;
     await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     // remove the id matched review from the reviews array 

@@ -34,7 +34,7 @@ router.get('/:id', wrapAsync(async (req, res, next) => {
         path: 'reviews',
         populate: {
             path: 'author'
-        }
+        }// populate multiple layers
     }).populate('author', 'username');
     // only populate the author.username for user private protection
 

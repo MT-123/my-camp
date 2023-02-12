@@ -60,11 +60,14 @@
             <figcaption class="blockquote-footer text-end">
               <cite><%= review.author?.username %></cite>
             </figcaption>
-
           </div>
+
+          <% if (currentUser?.equals(review.author)){%>
+          <!-- currentUser exists and equals to review author -->
           <form action="/campgrounds/<%= camp._id %>/reviews/<%=review._id%>?_method=DELETE" method="POST">
             <button class="btn btn-danger float-end mb-2">Delete</button>
           </form>
+          <% } %>
         </div>
         <% } %>
 
@@ -72,8 +75,10 @@
             <form class="card-text mb-2" action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
               <h3>Campground actions</h3>
               <a href="/campgrounds" class="btn btn-primary float-end">Back to the list</a>
+
               <!-- not author not allowed to edit and delete -->
               <% if ( currentUser && currentUser.equals(camp.author)){ %>
+                <!-- currentUser exists and equals to campground author -->
                 <!-- .equals is the method of mongoose document object -->
                 <a href="/campgrounds/<%= camp._id %>/edit" class="btn btn-warning mx-2">Edit</a>
                 <button class="btn btn-danger">Delete</button>
@@ -82,3 +87,4 @@
           </div>
     </div>
   </div>
+  

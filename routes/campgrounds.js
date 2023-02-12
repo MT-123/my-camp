@@ -2,27 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground'); // import the model
 const wrapAsync = require('../utils/wrapAsync'); // to catch error from the async fn
-const { verifyCampSchema } = require('../schemas');
-const ExpressError = require('../utils/ExpressError');
-const isLoggedIn = require('../isLoggedIn');
+const { isLoggedIn, isAuthor, validateCampground } = require('../middleware')
 
-// middleware fn for data validation
-const validateCampground = (req, res, next) => {
-    const { error } = verifyCampSchema.validate(req.body);
-    if (error) { return next(new ExpressError(error.details.map(arr => arr.message), 400)) };
-    return next();
-}
-
-// middleware for checking the user is the author
-const isAuthor = async (req, res, next) => {
-    const { id } = req.params;
-    const camp = await Campground.findById(id);
-    if (!camp.author.equals(req.user._id)) {
-        req.flash('error', 'not the author!');
-        return res.redirect(`/campgrounds/${id}`);
-    }
-    return next();
-}
 
 // campgrounds index page
 router.get('/', wrapAsync(async (req, res) => {
@@ -32,7 +13,6 @@ router.get('/', wrapAsync(async (req, res) => {
 
 // new campground page
 router.get('/new', isLoggedIn, (req, res) => {
-    console.log(req)
     res.render('./campgrounds/new');
 });
 

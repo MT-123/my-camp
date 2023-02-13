@@ -49,4 +49,5 @@ I. Authetication
 9. add author data to the review and check the authorization for create and delete
 H. refactor the route to the controller
 1. extract functions from routers(campgrounds, reviews, and users) to create controllers
-2. 
+2. using router.route the condense the request route
+I.

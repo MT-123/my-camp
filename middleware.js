@@ -1,8 +1,7 @@
-const { verifyCampSchema,verifyReviewSchema } = require('./schemas');
+const { verifyCampSchema,verifyReviewSchema } = require('./utils/joiSchemas');
 const ExpressError = require('./utils/ExpressError');
 const Campground = require('./models/campground');
 const Review = require('./models/reviews');
-
 
 
 // login status check
@@ -15,14 +14,14 @@ module.exports.isLoggedIn = (req, res, next) => {
         return res.redirect('/login');
     }
     return next();
-}
+};
 
 // middleware fn for data validation
 module.exports.validateCampground = (req, res, next) => {
     const { error } = verifyCampSchema.validate(req.body);
     if (error) { return next(new ExpressError(error.details.map(arr => arr.message), 400)) };
     return next();
-}
+};
 
 // middleware for checking the user is the author
 module.exports.isAuthor = async (req, res, next) => {
@@ -33,7 +32,7 @@ module.exports.isAuthor = async (req, res, next) => {
         return res.redirect(`/campgrounds/${id}`);
     }
     return next();
-}
+};
 
 module.exports.isReviewAuthor = async(req,res,next)=>{
     const { id , reviewId } = req.params;
@@ -44,11 +43,11 @@ module.exports.isReviewAuthor = async(req,res,next)=>{
         return res.redirect(`/campgrounds/${id}`);
     }
     return next();
-}
+};
 
 // middleware fn for review validation
 module.exports.validateReview = (req, res, next) => {
     const { error } = verifyReviewSchema.validate(req.body);
     if (error) { return next(new ExpressError(error.details.map(arr => arr.message), 400)) };
     return next();
-}
+};

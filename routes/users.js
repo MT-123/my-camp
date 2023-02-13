@@ -4,59 +4,26 @@ const User = require('../models/user');
 const wrapAsync = require('../utils/wrapAsync');
 const passport = require('passport');
 const { authenticate } = require('../models/user');
+const userController = require('../controllers/users')
 
 // register page
-router.get('/register', (req, res) => {
-    res.render('./users/register');
-})
+router.get('/register', userController.renderRegister);
 
 // register user
-router.post('/register', wrapAsync(async (req, res, next) => {
-    try {
-        const { user } = req.body;
-        const newUser = new User(user);
-        const registerUser = await User.register(newUser, user.password);
-        // register argument is (user data[mongoose document],password[string])
-        req.login(registerUser, (err) => {
-            if (err) { return next(err); }
-            req.flash('success', 'Welcome, registration completed!');
-            res.redirect('/campgrounds');
-            // cause the login takes time, the redirect has to be inside this callback fn 
-            // otherwise, the req.user will not be existing during redircting
-        });
-    } catch (err) {
-        // if the register fails(ex. username has been used), send the err message 
-        req.flash('err', err.message);
-        res.redirect('/register');
-    }
-}))
+router.post('/register', wrapAsync(userController.createUser))
 
 // login page
-router.get('/login', (req, res) => {
-    res.render('./users/login');
-})
+router.get('/login', userController.renderLogin)
 
 // login authenticate
 router.post('/login',
-    passport.authenticate('local', { failureRedirect: '/login', failureFlash: true , keepSessionInfo: true}),
+    passport.authenticate('local', { failureRedirect: '/login', failureFlash: true ,keepSessionInfo: true}),
     // this middleware will find req.body.username and req.body.passsword by default
     // keepSessionInfo must set to true to avoid req.session.returnTo being cleared
-    (req, res) => {
-        req.flash('success', `Hi ${req.body.username}, welcome back.`);
-        const redirectPath = req.session.returnTo || '/campgrounds';
-        // retrieve the original url
-        delete req.session.returnTo;
-        // delete the returnTo property
-        res.redirect(redirectPath);
-    })
+    userController.redirectLoggedIn
+    )
 
 // logout
-router.get('/logout', (req, res) => {
-    req.logout((err) => {
-        if (err) { return next(err); }
-        req.flash('success', 'Logged out. Goodbye!');
-        res.redirect('/campgrounds');
-    });
-})
+router.get('/logout', userController.logout)
 
 module.exports = router;

@@ -47,3 +47,6 @@ I. Authetication
 7. add feature: campgrounds add author data and show author on show page
 8. check authorization before create, edit, and delete
 9. add author data to the review and check the authorization for create and delete
+H. refactor the route to the controller
+1. extract functions from routers(campgrounds, reviews, and users) to create controllers
+2. 

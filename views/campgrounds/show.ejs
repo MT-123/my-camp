@@ -1,4 +1,6 @@
 <% layout('./layouts/boilerplate')%>
+<link rel="stylesheet" href="/css/starability.css">
+<!-- using starability from github -->
 
   <div class="row justify-content-center">
     <div class="col col-md-8">
@@ -28,11 +30,21 @@
           <div>
             <h3>Make your review</h3>
             <form action="/campgrounds/<%= camp._id %>/reviews" method="POST" class="needs-validation" novalidate>
-              <div class="mb-1">
-                <label for="rating">Rating</label>
-                <input type="range" id="rating" name="reviews[rating]" min="1" max="5"
-                  oninput="this.nextElementSibling.value = this.value">
-                <output><b>3</b></output>
+              <div>
+                <fieldset class="starability-basic">
+                  <legend></legend>
+                  <input type="radio" id="first-rate1" name="reviews[rating]" value="1" />
+                  <label for="first-rate1" title="Terrible">1 star</label>
+                  
+                  <input type="radio" id="first-rate2" name="reviews[rating]" value="2" />
+                  <label for="first-rate2" title="Not good">2 stars</label>
+                  <input type="radio" id="first-rate3" name="reviews[rating]" value="3" checked/>
+                  <label for="first-rate3" title="Average">3 stars</label>
+                  <input type="radio" id="first-rate4" name="reviews[rating]" value="4" />
+                  <label for="first-rate4" title="Very good">4 stars</label>
+                  <input type="radio" id="first-rate5" name="reviews[rating]" value="5" />
+                  <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="body">Comment</label>
@@ -52,9 +64,7 @@
       <h3>Reviews</h3>
       <% for (review of camp.reviews) { %>
         <div class=" card pt-1 mb-2 pt-2 px-2">
-          <h6>Rating: <%= review.rating %>
-          </h6>
-
+          <p class="starability-result" data-rating=<%= review.rating %>></p>
           <div class="card-text">
               <p><%= review.body %></p>
             <figcaption class="blockquote-footer text-end">

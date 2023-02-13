@@ -1,78 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const Campground = require('../models/campground'); // import the model
 const wrapAsync = require('../utils/wrapAsync'); // to catch error from the async fn
 const { isLoggedIn, isAuthor, validateCampground } = require('../middleware')
+const campController = require('../controllers/campgrounds');
 
 
-// campgrounds index page
-router.get('/', wrapAsync(async (req, res) => {
-    const camps = await Campground.find({});
-    res.render('./campgrounds/index', { camps });
-}));
+router.route('/')
+    .get(wrapAsync(campController.renderIndex))// campgrounds index page
+    .post(isLoggedIn, validateCampground, wrapAsync(campController.createCamp))// create
 
 // new campground page
-router.get('/new', isLoggedIn, (req, res) => {
-    res.render('./campgrounds/new');
-});
-
-// create
-router.post('/', isLoggedIn, validateCampground, wrapAsync(async (req, res, next) => {
-    const { campground } = req.body;
-    const newCamp = new Campground(campground);
-    newCamp.author = req.user._id;// req.user is created by passport after login done
-    await newCamp.save();
-    req.flash('success', 'A new campground added!');// push a flash message
-    res.redirect(`/campgrounds/${newCamp.id}`);
-}));
-
-// Read
-router.get('/:id', wrapAsync(async (req, res, next) => {
-    // name the url with hierarchy structure(home/index/element)
-    const { id } = req.params;
-    const camp = await Campground.findById(id).populate({
-        path: 'reviews',
-        populate: {
-            path: 'author'
-        }// populate multiple layers
-    }).populate('author', 'username');
-    // only populate the author.username for user private protection
-
-    if (!camp) {
-        req.flash('error', 'no such campground!');
-        return res.redirect('/campgrounds');
-        // use return to end the code here to aviod execute the render below
-    }
-    res.render('./campgrounds/show', { camp });
-}));
-
+router.get('/new', isLoggedIn, campController.renderNewForm);
 
 // Update 1/2
-router.get('/:id/edit', isLoggedIn, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const camp = await Campground.findById(id);
-    if (!camp) {
-        req.flash('error', 'no such campground!');
-        return res.redirect('/campgrounds');
-    }
-    res.render('./campgrounds/edit', { camp })
-}));
+router.get('/:id/edit', isLoggedIn, wrapAsync(campController.renderEdit));
 
-// Update 2/2
-router.put('/:id', isLoggedIn, isAuthor, validateCampground, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const { campground } = req.body;
-    await Campground.findByIdAndUpdate(id, campground);
-    req.flash('success', 'The campground updated!');
-    res.redirect(`/campgrounds/${id}`);
-}));
-
-// Delete
-router.delete('/:id', isLoggedIn, isAuthor, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const camp = await Campground.findByIdAndDelete(id);
-    req.flash('success', `The campground ${camp.title} deleted!`);
-    res.redirect('/campgrounds');
-}));
+router.route('/:id')
+    .get(wrapAsync(campController.readCamp))// Read
+    .put(isLoggedIn, isAuthor, validateCampground, wrapAsync(campController.updateCamp))// Update 2/2
+    .delete(isLoggedIn, isAuthor, wrapAsync(campController.deleteCamp))// Delete
 
 module.exports = router;

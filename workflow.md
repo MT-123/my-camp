@@ -29,3 +29,25 @@ F. add review feature
 1. create review DB model, Joi model, and add form to the show page
 2. make routes for post a review, add review to campgroung and review model
 3. make route for delete a review, remove remove from both models
+4. make delete middleware to delete reviews as the related campground is deleted
+G. refactor the routes and middlewares by router
+1. create router files for campgrounds ans reviews
+2. set up the middleware for the routers
+H. add session and flash for success and error events
+1. install express-session and connect-flash by npm
+2. setup the session option and add flash message to routes
+3. create flash partials
+I. Authetication
+1. install 3 passport packages passport passport-local passport-local-mongoose
+2. create user model and middleware for passport
+3. create user route, registration page, and feature of create a user to users DB
+4. create login route, page and login authentication with passport middleware
+5. create log out route and pages
+6. add feature: redirect to previous page after login
+7. add feature: campgrounds add author data and show author on show page
+8. check authorization before create, edit, and delete
+9. add author data to the review and check the authorization for create and delete
+H. refactor the route to the controller
+1. extract functions from routers(campgrounds, reviews, and users) to create controllers
+2. using router.route the condense the request route
+I. add image file upload to cloud

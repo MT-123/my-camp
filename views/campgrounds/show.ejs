@@ -1,4 +1,6 @@
 <% layout('./layouts/boilerplate')%>
+<link rel="stylesheet" href="/css/starability.css">
+<!-- using starability from github -->
 
   <div class="row justify-content-center">
     <div class="col col-md-8">
@@ -16,19 +18,32 @@
             <small class="card-text text-muted float-end">$<%= camp.price %>/night</small>
           </p>
           <p class="card-text">
+            <%= camp.author.username %>
+          </p>
+          <p class="card-text">
             <%= camp.description %>
           </p>
           <hr>
 
-
+          <% if (currentUser){ %>
+            <!-- logged in to make the review -->
           <div>
             <h3>Make your review</h3>
             <form action="/campgrounds/<%= camp._id %>/reviews" method="POST" class="needs-validation" novalidate>
-              <div class="mb-1">
-                <label for="rating">Rating</label>
-                <input type="range" id="rating" name="reviews[rating]" min="1" max="5"
-                  oninput="this.nextElementSibling.value = this.value">
-                <output><b>3</b></output>
+              <div>
+                <fieldset class="starability-basic">
+                  <legend></legend>
+                  <input type="radio" id="first-rate1" name="reviews[rating]" value="1" />
+                  <label for="first-rate1" title="Terrible">1 star</label>
+                  <input type="radio" id="first-rate2" name="reviews[rating]" value="2" />
+                  <label for="first-rate2" title="Not good">2 stars</label>
+                  <input type="radio" id="first-rate3" name="reviews[rating]" value="3" checked/>
+                  <label for="first-rate3" title="Average">3 stars</label>
+                  <input type="radio" id="first-rate4" name="reviews[rating]" value="4" />
+                  <label for="first-rate4" title="Very good">4 stars</label>
+                  <input type="radio" id="first-rate5" name="reviews[rating]" value="5" />
+                  <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="body">Comment</label>
@@ -41,29 +56,44 @@
             </form>
             <br>
           </div>
+          <% }%>
         </div>
       </div>
 
       <h3>Reviews</h3>
       <% for (review of camp.reviews) { %>
-        <div class=" card pt-1 mb-2">
-          <h6>Rating: <%= review.rating %></h6>
-          <p class="card-text"><%= review.body %></p>
+        <div class=" card pt-1 mb-2 pt-2 px-2">
+          <p class="starability-result" data-rating=<%= review.rating %>></p>
+          <div class="card-text">
+              <p><%= review.body %></p>
+            <figcaption class="blockquote-footer text-end">
+              <cite><%= review.author?.username %></cite>
+            </figcaption>
+          </div>
+
+          <% if (currentUser?.equals(review.author)){%>
+          <!-- currentUser exists and equals to review author -->
           <form action="/campgrounds/<%= camp._id %>/reviews/<%=review._id%>?_method=DELETE" method="POST">
             <button class="btn btn-danger float-end mb-2">Delete</button>
           </form>
-        </div>
           <% } %>
+        </div>
+        <% } %>
 
-      <div>
-        <form class="card-text mb-2" action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
-          <h3>Campground actions</h3>
-          <a href="/campgrounds" class="btn btn-primary float-end">Back to the list</a>
-          <a href="/campgrounds/<%= camp._id %>/edit" class="btn btn-warning float-end  mx-2">Edit</a>
-          <button class="btn btn-danger">delete</button>
-        </form>
-      </div>
+          <div>
+            <form class="card-text mb-2" action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
+              <h3>Campground actions</h3>
+              <a href="/campgrounds" class="btn btn-primary float-end">Back to the list</a>
+
+              <!-- not author not allowed to edit and delete -->
+              <% if ( currentUser && currentUser.equals(camp.author)){ %>
+                <!-- currentUser exists and equals to campground author -->
+                <!-- .equals is the method of mongoose document object -->
+                <a href="/campgrounds/<%= camp._id %>/edit" class="btn btn-warning mx-2">Edit</a>
+                <button class="btn btn-danger">Delete</button>
+                <% } %>
+            </form>
+          </div>
     </div>
   </div>
-
-  <%- include("../partials/validationClient") %>
+  

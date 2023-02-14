@@ -51,3 +51,5 @@ H. refactor the route to the controller
 1. extract functions from routers(campgrounds, reviews, and users) to create controllers
 2. using router.route the condense the request route
 I. add image file upload to cloud
+1. install multer and create upload feature: revise form at new.ejs and add upload middleware at campground router
+2. 

@@ -7,7 +7,7 @@ module.exports.renderIndex = async (req, res) => {
 };
 
 module.exports.renderNewForm=(req, res) => {
-    res.render('./campgrounds/new');
+    res.render('./campgrounds/newImg');
 };
 
 module.exports.createCamp=async (req, res, next) => {

@@ -2,7 +2,8 @@
     <div class="row">
         <div class="col-6 offset-3">
             <h1 class="text-center">Add a new camp</h1>
-            <form action="/campgrounds" method="POST" class="needs-validation" novalidate>
+            <form action="/campgrounds" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+                <!-- enctype for multer to upload the image files -->
                 <label class="form-label mt-3" for="title">Title</label>
                 <input class="form-control border-dark-subtle" type="text" id="title" name="campground[title]" required>
                 <div class="invalid-feedback">
@@ -27,18 +28,15 @@
                     </div>
                 </div>
                 
-                
-                
                 <label class="form-label mt-3" for="location">Location</label>
                 <input class="form-control border-dark-subtle" type="text" id="location" name="campground[location]" required>
                 <div class="invalid-feedback">
                     required
                 </div>
- 
-                <label class="form-label mt-3" for="image">Image url</label>
-                <input class="form-control border-dark-subtle" type="text" id="image" name="campground[image]" required>
-                <div class="invalid-feedback">
-                    required
+                
+                <div>
+                    <label class="form-label mt-3" for="imageUpload">Image Upload Files (max:5 photos)</label>
+                    <input type="file" id="imageUpload" name="photoFile" multiple/>
                 </div>
 
                 <button class="btn btn-success mt-2 float-end">Add campground</button>

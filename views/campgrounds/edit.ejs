@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-6 offset-3">
             <h1 class="text-center">edit the camp</h1>
-            <form action="/campgrounds/<%= camp.id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+            <form action="/campgrounds/<%= camp.id %>?_method=PUT" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                 <!-- novalidate to suppress the default validation-->
                 <label class="form-label mt-3" for="title">Title</label>
                 <input class="form-control border-dark-subtle" type="text" id="title" name="campground[title]"
@@ -36,11 +36,9 @@
                     required
                 </div>
 
-                <label class="form-label mt-3" for="image">Image url</label>
-                <input class="form-control border-dark-subtle" type="text" id="image" name="campground[image]"
-                    value="<%= camp.image %>" required>
-                <div class="invalid-feedback">
-                    required
+                <div>
+                    <label class="form-label mt-3" for="imageUpload">Image Upload Files (max:5 photos)</label>
+                    <input type="file" id="imageUpload" name="photoFile" multiple/>
                 </div>
 
                 <button class="btn btn-success mt-2 float-end">Update campground</button>

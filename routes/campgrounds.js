@@ -13,7 +13,7 @@ router.route('/')
     // campgrounds index page
     .post(// create campgrounds
         isLoggedIn,
-        upload.array('photoFile'),// upload image files and create req.files for files info
+        upload.array('photoFile',5),// upload image files and create req.files for files info
         validateCampground,
         wrapAsync(campController.createCamp))
 
@@ -25,7 +25,11 @@ router.get('/:id/edit', isLoggedIn, wrapAsync(campController.renderEdit));
 
 router.route('/:id')
     .get(wrapAsync(campController.readCamp))// Read
-    .put(isLoggedIn, isAuthor, validateCampground, wrapAsync(campController.updateCamp))// Update 2/2
+    .put(isLoggedIn,
+        isAuthor,
+        upload.array('photoFile',5),
+        validateCampground,
+        wrapAsync(campController.updateCamp))// Update 2/2
     .delete(isLoggedIn, isAuthor, wrapAsync(campController.deleteCamp))// Delete
 
 module.exports = router;

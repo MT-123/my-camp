@@ -7,12 +7,13 @@ module.exports.renderIndex = async (req, res) => {
 };
 
 module.exports.renderNewForm = (req, res) => {
-    res.render('./campgrounds/newImg');
+    res.render('./campgrounds/new');
 };
 
 module.exports.createCamp = async (req, res, next) => {
     const { campground } = req.body;
     const imgURL = req.files.map((arr) => ({ filename: arr.filename, url: arr.path }));
+    // req.files is added after upload.array() middleware
     const newCamp = new Campground(campground);
     newCamp.author = req.user._id;// req.user is created by passport after login done
     newCamp.cloudImg = imgURL;
@@ -53,6 +54,8 @@ module.exports.renderEdit = async (req, res) => {
 module.exports.updateCamp = async (req, res) => {
     const { id } = req.params;
     const { campground } = req.body;
+    const imgURL = req.files.map((arr) => ({ filename: arr.filename, url: arr.path }));
+    campground.cloudImg = imgURL;
     await Campground.findByIdAndUpdate(id, campground);
     req.flash('success', 'The campground updated!');
     res.redirect(`/campgrounds/${id}`);

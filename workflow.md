@@ -55,4 +55,4 @@ I. add image file upload to cloud
 2. install couldnary and multer-storage-cloudinary and setup cloudinary.js for upload img to the cloud
 3. revise new, show, and edit page for upload images
 4. revise campground model to write the uploaded image info into it
-5. 
+5. revise seeding function and seed again

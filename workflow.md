@@ -50,4 +50,4 @@ I. Authetication
 H. refactor the route to the controller
 1. extract functions from routers(campgrounds, reviews, and users) to create controllers
 2. using router.route the condense the request route
-I.
+I. add image file upload to cloud

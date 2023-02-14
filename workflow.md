@@ -52,4 +52,6 @@ H. refactor the route to the controller
 2. using router.route the condense the request route
 I. add image file upload to cloud
 1. install multer and create upload feature: revise form at new.ejs and add upload middleware at campground router
-2. 
+2. install couldnary and multer-storage-cloudinary and setup cloudinary.js for upload img to the cloud
+3. revise show page for showing mutiple images
+4. 

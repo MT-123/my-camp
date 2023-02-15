@@ -57,4 +57,5 @@ I. image file store at cloud
 4. revise campground model to write the uploaded image info into it
 5. revise seeding function and seed again
 6. revise edit page for delete image at DB and cloudinay
-7.
+7. revise camp schema to get compact img from cloud
+8. 

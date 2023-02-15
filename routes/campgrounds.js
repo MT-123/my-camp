@@ -4,7 +4,7 @@ const wrapAsync = require('../utils/wrapAsync'); // to catch error from the asyn
 const { isLoggedIn, isAuthor, validateCampground } = require('../middleware')
 const campController = require('../controllers/campgrounds');
 const multer = require('multer');
-const { cloudinary, storage } = require('../utils/cloudinary')
+const { storage } = require('../utils/cloudinary')
 const upload = multer({ storage });// set up the upload folder
 
 

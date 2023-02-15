@@ -2,7 +2,8 @@
     <div class="row">
         <div class="col-6 offset-3">
             <h1 class="text-center">edit the camp</h1>
-            <form action="/campgrounds/<%= camp.id %>?_method=PUT" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+            <form action="/campgrounds/<%= camp.id %>?_method=PUT" method="POST" class="needs-validation"
+                enctype="multipart/form-data" novalidate>
                 <!-- novalidate to suppress the default validation-->
                 <label class="form-label mt-3" for="title">Title</label>
                 <input class="form-control border-dark-subtle" type="text" id="title" name="campground[title]"
@@ -16,14 +17,15 @@
                     <span class="input-group-text border-dark-subtle">$</span>
                     <input type="text" class="form-control border-dark-subtle" id="price" name="campground[price]"
                         value="<%= camp.price %>" required>
-                        <div class="invalid-feedback">
-                            required
-                        </div>
+                    <div class="invalid-feedback">
+                        required
+                    </div>
                 </div>
 
                 <label class="form-label mt-3" for="description">Description</label>
                 <div class="form-floating">
-                    <textarea class="form-control border-dark-subtle" id="description" name="campground[description]" required><%= camp.description %></textarea>
+                    <textarea class="form-control border-dark-subtle" id="description" name="campground[description]"
+                        required><%= camp.description %></textarea>
                     <div class="invalid-feedback">
                         required
                     </div>
@@ -38,10 +40,28 @@
 
                 <div>
                     <label class="form-label mt-3" for="imageUpload">Add photos (max:5 pcs)</label>
-                    <input type="file" id="imageUpload" name="photoFile" multiple/>
+                    <input type="file" id="imageUpload" name="photoFile" multiple />
                 </div>
 
-                <button class="btn btn-success mt-2 float-end">Update campground</button>
+                <div class="row">
+                    <span class="mt-2">Current photo</span>
+                    <% for (let i=0; i<camp.cloudImg.length ;i++) {%>
+                        <div class="col-sm-6">
+                            <div class="card" style="height: 100%;background-color: rgb(200, 200, 200);">
+                                <div class="form-check">
+                                    <div class="card-body">
+                                        <input class="form-check-input" type="checkbox" name="deleteImg[]" value="<%=camp.cloudImg[i].filename %>" id="image<%= i %>">
+                                        <!-- name="deleteImg[] the [] make deleteImg an array-->
+                                        <label class="form-check-label" for="image<%= i %>">
+                                            Delete
+                                            <img src="<%=camp.cloudImg[i].url %>" class="img-thumbnail">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                            <button class="btn btn-success mt-2 float-end">Update campground</button>
             </form>
             <a href="/campgrounds/<%= camp.id %>" class="btn btn-primary mt-2">Back</a>
         </div>

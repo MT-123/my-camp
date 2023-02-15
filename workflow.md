@@ -50,4 +50,12 @@ I. Authetication
 H. refactor the route to the controller
 1. extract functions from routers(campgrounds, reviews, and users) to create controllers
 2. using router.route the condense the request route
-I. add image file upload to cloud
+I. image file store at cloud
+1. install multer and create upload feature: revise form at new.ejs and add upload middleware at campground router
+2. install couldnary and multer-storage-cloudinary and setup cloudinary.js for upload img to the cloud
+3. revise new, show, and edit page for upload images
+4. revise campground model to write the uploaded image info into it
+5. revise seeding function and seed again
+6. revise edit page for delete image at DB and cloudinay
+7. revise camp schema to get compact img from cloud
+8. 

@@ -5,8 +5,8 @@ module.exports.verifyCampSchema = Joi.object({
         price: Joi.number().min(0).required(),
         description: Joi.string().required(),
         location: Joi.string().required(),
-        image: Joi.string().required()
-    }).required()
+    }).required(),
+    deleteImg: Joi.array(),
 });
 
 module.exports.verifyReviewSchema = Joi.object({

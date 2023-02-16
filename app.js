@@ -17,16 +17,22 @@ const passport = require('passport');
 const localStategy = require('passport-local');
 const User = require('./models/user');
 const usersRoute = require('./routes/users');
+const helmet = require("helmet");
+const helmetConfig = require('./utils/helmetConfig')
+const mongoSanitize = require('express-mongo-sanitize');
+
 
 const sessionConfig = {
-    secret: 'temporary',
-    resave: false, // to suppress warning
+    // for safety, some defaults have better been modified to avoid session hijack
+    name:"campUser",// cookie name, default is "connect.sid" if not specified
+    secret: 'thisissecretjkl80&-df#f',// string for computing hash, it should be random
+    resave: false, // not resaving session if no modified, for reducing server loading
     saveUninitialized: true, // to suppress warning
     cookie: { // setup cookies
-        maxAge: 1000 * 60 * 30,//expire in 30 min
-        httpOnly: true // for web safety
+        maxAge: 1000 * 60 * 30,// expire in 30 min
+        httpOnly: true // for web safety, session is only accessible by http
     }
-}
+};
 
 mongoose.set('strictQuery', true); // to supress mongoose warning
 mongoose.connect('mongodb://localhost:27017/my-camp');
@@ -49,6 +55,12 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(helmet()); // for web security
+app.use(helmetConfig);
+
+
+app.use(mongoSanitize());// to prevent mongo injection
+
 app.use(passport.initialize());
 app.use(passport.session());
 //the passport.session must be after session middleware
@@ -60,14 +72,6 @@ passport.deserializeUser(User.deserializeUser());
 //to store and remove the sessions of logged users
 
 
-// log request for a campground
-app.use('/campgrounds/:id', (req, res, next) => {
-    // middleware for url with "/campgrounds/" by any methods
-    console.log('! id: ', req.params.id, ' accessing!')
-    return next();
-    // use "return" instead of just "next()"" to make sure this middleware ends here
-});
-
 // objects access to every page
 app.use((req, res, next) => {
     // flash
@@ -76,7 +80,7 @@ app.use((req, res, next) => {
     // login status
     res.locals.currentUser = req.user;
     return next();
-})
+});
 
 
 // routers
@@ -87,21 +91,21 @@ app.use('/',usersRoute);
 // homepage
 app.get('/', (req, res) => {
     res.render('home');
-})
+});
 
 // catch the unexpected url
 app.all('*', (req, res, next) => {
     const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     console.log('! request url out of routes!!! url:\n', fullUrl)
     return next(new ExpressError('No such link!', 404));
-})
+});
 
 // catch error
 app.use((err, req, res, next) => {
     const { statusCode = 500, message = "Internal issue :'(" } = err;
     console.log('X ERROR:\n', err);
     res.status(statusCode).render('error', { statusCode, message })
-})
+});
 
 app.listen(8080, () => {
     console.log('V Port 8080 online :)');

@@ -32,9 +32,9 @@ const CampgroundSchema = new Schema({
 
 CampgroundSchema.post('findOneAndDelete', async (doc) => {
     if (doc) {
-        await Review.deleteMany({ _id: { $in: doc.reviews } })
+        await Review.deleteMany({ _id: { $in: doc.reviews } });
     }
-})
+});
 
 // findByIdAndDelete() in the app.js will trigger findOneAndDelete() which is supported by post middleware
 // middleware post is OK(instead of pre) because the deleted document is passed to doc

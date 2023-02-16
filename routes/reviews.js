@@ -4,13 +4,13 @@ const Campground = require('../models/campground'); // import the model
 const Review = require('../models/reviews');
 const wrapAsync = require('../utils/wrapAsync'); // to catch error from the async fn
 const { validateReview, isLoggedIn, isReviewAuthor } = require('../middleware');
-const reviewController = require('../controllers/reviews')
+const reviewController = require('../controllers/reviews');
 
 // post a review
-router.post('/', isLoggedIn, validateReview, wrapAsync(reviewController.createReview))
+router.post('/', isLoggedIn, validateReview, wrapAsync(reviewController.createReview));
 
 
 // delete a review
-router.delete('/:reviewId', isReviewAuthor, wrapAsync(reviewController.deleteReview))
+router.delete('/:reviewId', isReviewAuthor, wrapAsync(reviewController.deleteReview));
 
 module.exports = router;

@@ -7,7 +7,7 @@ const UserSchema = new Schema({
         type:String,
         require:true
     }
-})
+});
 
 UserSchema.plugin(passportLocalMongoose);
 // passport will take "username" and "password" keys by default

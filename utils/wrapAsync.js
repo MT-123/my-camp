@@ -4,6 +4,6 @@ function wrapAsync (fn){
             return next(e);
         });
     }
-}
+};
 
 module.exports = wrapAsync;

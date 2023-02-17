@@ -4,6 +4,7 @@ if(process.env.NODE_ENV !== "production") {
 
 const express = require('express');
 const app = express();
+const port = process.env.PORT || 8080;
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
@@ -110,6 +111,6 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { statusCode, message })
 });
 
-app.listen(8080, () => {
-    console.log('V Port 8080 online :)');
+app.listen(port, () => {
+    console.log(`V Port ${port} online :)`);
 });

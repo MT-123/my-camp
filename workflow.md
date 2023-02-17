@@ -59,3 +59,8 @@ I. image file store at cloud
 6. revise edit page for delete image at DB and cloudinay
 7. revise camp schema to get compact img from cloud
 J. use helmet and mongo sanitize for web security
+I. docker
+1. create dockerfile and .dockerignore
+2. docker build -t mycamp/demolocal:1.0 . 
+3. docker run -p 80:8080 07bf58234ef9
+4. 

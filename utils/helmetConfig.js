@@ -1,6 +1,6 @@
 const helmet = require("helmet");
 
-module.exports= helmet.contentSecurityPolicy({
+module.exports.contentSecurityPolicy= helmet.contentSecurityPolicy({
     directives: {
         "script-src": [
             "'self'",
@@ -13,4 +13,6 @@ module.exports= helmet.contentSecurityPolicy({
             "https://res.cloudinary.com/",
         ],
     },
-})
+});
+
+module.exports.crossOriginEmbedderPolicy=helmet.crossOriginEmbedderPolicy({ policy: "credentialless" });

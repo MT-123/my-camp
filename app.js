@@ -18,8 +18,9 @@ const localStategy = require('passport-local');
 const User = require('./models/user');
 const usersRoute = require('./routes/users');
 const helmet = require("helmet");
-const helmetConfig = require('./utils/helmetConfig')
+const {contentSecurityPolicy, crossOriginEmbedderPolicy} = require('./utils/helmetConfig');
 const mongoSanitize = require('express-mongo-sanitize');
+
 
 
 const sessionConfig = {
@@ -55,8 +56,10 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(session(sessionConfig));
 app.use(flash());
 
-app.use(helmet()); // for web security
-app.use(helmetConfig);
+app.use(helmet()); // make restriction for web security
+app.use(contentSecurityPolicy);// set the access to the specified outer resouces
+app.use(crossOriginEmbedderPolicy);// set the cross origin policy
+
 
 
 app.use(mongoSanitize());// to prevent mongo injection

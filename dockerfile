@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-ENV PORT=80
+ENV PORT=80 DBPATH=mongodb://container-mongo:27017
 
 EXPOSE 80
 

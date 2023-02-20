@@ -1,6 +1,6 @@
 const helmet = require("helmet");
 
-module.exports.contentSecurityPolicy= helmet.contentSecurityPolicy({
+module.exports.contentSecurityPolicy = helmet.contentSecurityPolicy({
     directives: {
         "script-src": [
             "'self'",
@@ -15,4 +15,6 @@ module.exports.contentSecurityPolicy= helmet.contentSecurityPolicy({
     },
 });
 
-module.exports.crossOriginEmbedderPolicy=helmet.crossOriginEmbedderPolicy({ policy: "credentialless" });
+module.exports.crossOriginEmbedderPolicy = helmet.crossOriginEmbedderPolicy({
+    policy: "credentialless"
+});

@@ -5,6 +5,7 @@ if(process.env.NODE_ENV !== "production") {
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8080;
+const dbPath = process.env.DBPATH||'mongodb://localhost:27017/my-camp';
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
@@ -37,7 +38,7 @@ const sessionConfig = {
 };
 
 mongoose.set('strictQuery', true); // to supress mongoose warning
-mongoose.connect('mongodb://localhost:27017/my-camp');
+mongoose.connect(dbPath);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'X database connection error:'));
 db.once('open', () => {

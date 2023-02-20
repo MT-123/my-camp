@@ -59,8 +59,32 @@ I. image file store at cloud
 6. revise edit page for delete image at DB and cloudinay
 7. revise camp schema to get compact img from cloud
 J. use helmet and mongo sanitize for web security
-I. docker
+
+K. docker
+
+KI. mongoDB
+1. stop local mongod to release port:27017 for container mongod
+2. download mongo image by "docker pull mongo:latest"
+3. find mongo image and its id by "docker images"
+4. create network:
+docker network create [network-name]
+"docker network create test-network-1"
+4. run the container by"
+"docker run --name [name the container] -v [the path of host folder to store DB data]:/data/db --network [network-name] -d [image id/name]"
+note. -v: volume; -d: run at background;
+example:
+"docker run -d --network test-network-1 --name container-mongo -v /Users/changpaul/Documents/projects/udemy/webDevBootCamp/camp/myCampDB/data:/data/db cf5bc883c474"
+
+Important!!
+stop mongoDB before stop container
+go to container terminal and command
+use admin
+db.shutdownServer()
+
+KII. mycamp
 1. create dockerfile and .dockerignore
-2. docker build -t mycamp/demolocal:1.0 . 
-3. docker run -p 80:8080 07bf58234ef9
-4. 
+2. build image "docker build -t mycamp/network:1.1 ."
+3. run container:
+note -p: port forward [host port:container port]
+"docker run --name MyCampNetworkv1.2 -p 80:80 --network test-network-1 -d mycamp/network:1.1"
+

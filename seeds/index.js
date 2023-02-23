@@ -1,12 +1,13 @@
 // This is seeding data to the my-camp
 // !!! the collection campgrounds will be erased first!
+const dbPath = process.env.DBPATH||'mongodb://localhost:27017/my-camp';
 const mongoose = require('mongoose');
 const Campground = require('../models/campground');
 const cities = require('./cities');
 const { descriptors, places } = require('./seedHelpers');
 const {campImg} = require('./campImg');
 
-mongoose.connect('mongodb://localhost:27017/my-camp');
+mongoose.connect(dbPath);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
@@ -26,7 +27,7 @@ async function seedDB() {
         // randomly select words from the dictionary
         const description = "Camping is a form of outdoor recreation involving overnight stays with a basic temporary shelter such as a tent. Camping can also include a recreational vehicle, a permanent tent, a shelter such as a bivy or tarp, or no shelter at all. Typically, participants leave developed areas to spend time outdoors, in pursuit of activities providing them enjoyment or an educational experience. Spending the night away from home distinguishes camping from day-tripping, picnicking, and other outdoor activities.";
         const cloudImg = traverseArray(campImg,i);
-        const author = '63e85250e29627db1b140605';//default as Paul
+        const author = '63ef604a4edf098800293983';//default using registered user
 
         // make an instance
         const camp = new Campground({

@@ -1,0 +1,22 @@
+version: '1.0'
+services:
+  app:
+    build: .
+    container_name: my-camp
+    ports:
+      - "80:80"
+    networks:
+      - my-network
+    environment:
+      DBPATH: mongodb://container-mongo:27017/my-camp
+  db:
+    image: mongo:latest
+    container_name: container-mongo
+    networks:
+      - my-network
+    volumes:
+      - ./data/mongo:/data/db
+
+networks:
+  my-network:
+    driver: bridge

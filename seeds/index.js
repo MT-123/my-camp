@@ -1,12 +1,13 @@
 // This is seeding data to the my-camp
 // !!! the collection campgrounds will be erased first!
+const dbPath = process.env.DBPATH||'mongodb://localhost:27017/my-camp';
 const mongoose = require('mongoose');
 const Campground = require('../models/campground');
 const cities = require('./cities');
 const { descriptors, places } = require('./seedHelpers');
 const {campImg} = require('./campImg');
 
-mongoose.connect('mongodb://localhost:27017/my-camp');
+mongoose.connect(dbPath);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {

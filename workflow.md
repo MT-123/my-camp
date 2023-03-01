@@ -89,5 +89,10 @@ K. docker
 L. AWS
 1. signup for AWS and setup IAM
 2. install AWS CLI
-3. 
+
+M. DB migration from MongoDB to MySQL
+M1. mini test model for login and session setup
+1. create user DB and table for test model for login with MySQL workbench
+2. create local strategy and sql query for passport
+3. refactor the routes and front pages
 

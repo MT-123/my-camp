@@ -94,5 +94,6 @@ M. DB migration from MongoDB to MySQL
 M1. mini test model for login and session setup
 1. create user DB and table for test model for login with MySQL workbench
 2. create local strategy and sql query for passport
-3. refactor the routes and front pages
+3. create seeding functions
+4. refactor the controller and middleware from mongoDB to MySQL
 

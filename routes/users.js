@@ -1,15 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
 const wrapAsync = require('../utils/wrapAsync');
 const passport = require('passport');
-const { authenticate } = require('../models/user');
 const userController = require('../controllers/users');
+const {userDuplicate}=require('../utils/cryptoSQL')
 
 
 router.route('/register')
     .get(userController.renderRegister)// render register page
-    .post(wrapAsync(userController.createUser));// register user
+    .post(userDuplicate,wrapAsync(userController.createUser));// register user
 
 router.route('/login')
     .get(userController.renderLogin)// render login page

@@ -1,11 +1,11 @@
 -- at workbench run: CREATE DATABASE `my_camp`;
---@block
+-- @block
 SHOW DATABASES;
 
---@block
+-- @block
 USE `my_camp`;
 
---@block
+-- @block
 CREATE TABLE `users` (
     `user_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `username` VARCHAR(255) NOT NULL UNIQUE,
@@ -46,14 +46,14 @@ CREATE TABLE `images` (
 -- @block
 SHOW TABLES;
 
---@block
+-- @block
 DESCRIBE `campgrounds`;
 
---@block
+-- @block
 DESCRIBE `users`;
 
---@block
+-- @block
 DESCRIBE `reviews`;
 
---@block
+-- @block
 DESCRIBE `images`;

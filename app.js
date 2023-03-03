@@ -14,25 +14,11 @@ const reviewsRoute = require('./routes/reviews');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
-// const localStategy = require('passport-local');
 const usersRoute = require('./routes/users');
 const helmet = require("helmet");
 const {contentSecurityPolicy, crossOriginEmbedderPolicy} = require('./utils/helmetConfig');
 const {customField, verifyUser}= require('./utils/cryptoSQL');
-
-
-// MongoDB
-// const dbPath = process.env.DBPATH||'mongodb://localhost:27017/my-camp';
-// const mongoose = require('mongoose');
-// const User = require('./models/user');
-// const mongoSanitize = require('express-mongo-sanitize');
-
-
-// MySQL
 const LocalStategy = require('passport-local').Strategy;
-const querySQL = require('./utils/querySQL');
-const crypto = require('crypto');// node built-in
-
 
 const sessionConfig = {
     // for safety, some defaults have better been modified to avoid session hijack
@@ -45,17 +31,6 @@ const sessionConfig = {
         httpOnly: true // for web safety, session is only accessible by http
     }
 };
-
-
-// mongo connection
-// mongoose.set('strictQuery', true); // to supress mongoose warning
-// mongoose.connect(dbPath);
-// const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'X MongoDB connection error:'));
-// db.once('open', () => {
-//     console.log('V MongoDB connected :)');
-// });
-
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
@@ -72,22 +47,12 @@ app.use(helmet()); // make restriction for web security
 app.use(contentSecurityPolicy);// set the access to the specified outer resouces
 app.use(crossOriginEmbedderPolicy);// set the cross origin policy
 
-// app.use(mongoSanitize());// to prevent mongo injection
-
 app.use(flash());
 
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 //the passport.session must be after session middleware
-
-// passport.use(new localStategy(User.authenticate()));
-// use local authentication with user model
-
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-//to store and remove the sessions of logged users
-
 
 const strategy = new LocalStategy(customField, verifyUser);
 passport.use(strategy);
@@ -104,10 +69,6 @@ passport.deserializeUser((user, done) => {
     done(null, user);
 });
 
-
-
-
-
 // objects access to every page
 app.use((req, res, next) => {
     // flash
@@ -117,7 +78,6 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     return next();
 });
-
 
 // routers
 app.use('/campgrounds', campgroundsRoute);

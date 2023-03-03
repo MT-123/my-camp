@@ -1,6 +1,5 @@
 // This is seeding data to the my_camp
 // !!! the tables content will be erased first!
-const Campground = require('../models/campground');
 const cities = require('./cities');
 const { descriptors, places } = require('./seedHelpers');
 const { campImg } = require('./campImg');
@@ -21,6 +20,8 @@ async function seedSQLDB() {
     await querySQL('DELETE FROM campgrounds');
     await querySQL('DELETE FROM images');
     await querySQL('DELETE FROM users');
+
+    // create default user
     await querySQL(
         'INSERT INTO users (user_id,username,salt,hash,email) VALUES (?,?,?,?,?)',
         [defaulUser.user_id,defaulUser.username,defaulUser.salt,defaulUser.hash,defaulUser.email]

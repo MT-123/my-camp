@@ -6,17 +6,26 @@ services:
     ports:
       - "80:80"
     networks:
-      - my-network
+      - my-network-MySQL
     environment:
-      DBPATH: mongodb://container-mongo:27017/my-camp
+      HOST_SQL: container-MySQL
+      MYSQL_USER: paul
+      MYSQL_PASSWORD: paul123
+      MYSQL_DATABASE: my_camp
   db:
-    image: mongo:latest
-    container_name: container-mongo
+    image: mysql:latest
+    container_name: container-MySQL
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: my_camp
+      MYSQL_USER: paul
+      MYSQL_PASSWORD: paul123
     networks:
-      - my-network
+      - my-network-MySQL
     volumes:
-      - ./data/mongo:/data/db
+      - ./seeds:/docker-entrypoint-initdb.d
+      - ./data/MySQL:/var/lib/mysql
 
 networks:
-  my-network:
+  my-network-MySQL:
     driver: bridge

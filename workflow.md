@@ -91,9 +91,24 @@ L. AWS
 2. install AWS CLI
 
 M. DB migration from MongoDB to MySQL
-M1. mini test model for login and session setup
-1. create user DB and table for test model for login with MySQL workbench
-2. create local strategy and sql query for passport
-3. create seeding functions
+1. create my_camp DB and tables of MySQL
+2. create seeding functions and seed data
+3. refactor passport local strategy and serializtion for MySQL
 4. refactor the controller and middleware from mongoDB to MySQL
+5. package functions to modules and setup .env file
+6. clean up unused mongo related files and npm packages
+7. repace npm package mysql with mysql2 for connection issues
+
+N. docker
+1. create docker compose file
+a. set up environment variables for mysql connection
+b. set up volumes:
+b1. initialization path to .sql to create DB and tables
+b2. specify the local folder the persist the DB data
+2. go into app container to execute the seeding file
+
+
+
+
+
 

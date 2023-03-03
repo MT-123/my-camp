@@ -1,6 +1,6 @@
-const { verifyCampSchema,verifyReviewSchema } = require('./utils/joiSchemas');
-const ExpressError = require('./utils/ExpressError');
-const querySQL = require('./utils/querySQL');
+const { verifyCampSchema,verifyReviewSchema } = require('./joiSchemas');
+const ExpressError = require('./ExpressError');
+const querySQL = require('./querySQL');
 
 // login status check
 module.exports.isLoggedIn = (req, res, next) => {

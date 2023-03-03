@@ -1,9 +1,14 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
+const host = process.env.HOST_SQL || 'localhost';
+const user = process.env.MYSQL_USER || 'root';
+const password = process.env.MYSQL_PASSWORD || 'paulsql101';
+const DBname = process.env.MYSQL_DATABASE || 'my_camp';
+
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'paulsql101',
-  database: 'my_camp',
+  host: host,
+  user: user,
+  password: password,
+  database: DBname,
   multipleStatements: false, // prevent SQL injection
 });
 

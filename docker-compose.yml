@@ -12,6 +12,8 @@ services:
       MYSQL_USER: paul
       MYSQL_PASSWORD: paul123
       MYSQL_DATABASE: my_camp
+    depends_on:
+      - db
   db:
     image: mysql:latest
     container_name: container-MySQL
@@ -25,6 +27,7 @@ services:
     volumes:
       - ./seeds:/docker-entrypoint-initdb.d
       - ./data/MySQL:/var/lib/mysql
+
 
 networks:
   my-network-MySQL:

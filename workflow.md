@@ -88,7 +88,43 @@ K. docker
 
 L. AWS
 1. signup for AWS and setup IAM
-2. install AWS CLI
+2. AWS CLI
+2.1. install AES CLI
+2.2 configure CLI:
+a. IAM> users> [choose a user]> [go to security credentials]> [go to Access keys and create access key]
+> [folow instruction] > [get the acces key pair]
+b. % "aws configure" and setup the key pair, and region
+3. Create repository at ECR
+4. Upload image to ECR 
+a. % "aws ecr create-repository --repository-name my-camp-mysql --region ap-northeast-1" and copy the output
+b. use the output info to fill up the command 
+ % "docker tag mycamp-app 689406677901.dkr.ecr.ap-northeast-1.amazonaws.com/my-camp-mysql"
+ "mycamp-app" is image name
+ "689406677901.dkr...." is the value of key "repositoryUri" in the output
+ more info:
+ https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/create-container-image.html
+c. 
+% Login AWS ECR
+"docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-1) 689406677901.dkr.ecr.ap-northeast-1.amazonaws.com" 
+the pattern is 
+"docker login -u AWS -p $(aws ecr get-login-password --region REGION) aws_account_id.dkr.ecr.REGION.amazonaws.com"
+d. push image to ECR
+% "docker push 689406677901.dkr.ecr.ap-northeast-1.amazonaws.com/my-camp-mysql"
+"689406677901.dkr...." is the value of key "repositoryUri" in the output
+e. to get repository info
+% "aws ecr describe-repositories"
+
+3. AWS CDK
+3.1 install CDK
+% "sudo npm install -g aws-cdk" 
+3.2 bootstrap CDK
+% "cdk bootstrap aws://689406677901/ap-northeast-1"
+get the Account number(689406677901) by: % "aws sts get-caller-identity"
+get region(ap-northeast-1) by: % "aws configure get region"
+3.3 
+
+
+
 
 M. DB migration from MongoDB to MySQL
 1. create my_camp DB and tables of MySQL

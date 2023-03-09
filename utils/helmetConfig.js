@@ -3,8 +3,7 @@ const helmet = require("helmet");
 module.exports.contentSecurityPolicy = helmet.contentSecurityPolicy({
     directives: {
         "script-src": [
-            "'self'",
-            "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/"
+            "'self'"
         ],
         "img-src": [
             "'self'",

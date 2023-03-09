@@ -15,8 +15,6 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 const usersRoute = require('./routes/users');
-const helmet = require("helmet");
-const {contentSecurityPolicy, crossOriginEmbedderPolicy} = require('./utils/helmetConfig');
 const {customField, verifyUser}= require('./utils/cryptoSQL');
 const LocalStategy = require('passport-local').Strategy;
 
@@ -43,9 +41,6 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, '/public')));
 //set up path for static files at the public folder
 
-app.use(helmet()); // make restriction for web security
-app.use(contentSecurityPolicy);// set the access to the specified outer resouces
-app.use(crossOriginEmbedderPolicy);// set the cross origin policy
 
 app.use(flash());
 

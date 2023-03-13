@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 const host = process.env.HOST_SQL || 'localhost';
 const user = process.env.MYSQL_USER || 'root';
-const password = process.env.MYSQL_PASSWORD || 'paulsql101';
+const password = process.env.MYSQL_PASSWORD || '';
 const DBname = process.env.MYSQL_DATABASE || 'my_camp';
 
 const pool = mysql.createPool({

@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
@@ -15,12 +15,17 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 const usersRoute = require('./routes/users');
-const {customField, verifyUser}= require('./utils/cryptoSQL');
+const { customField, verifyUser } = require('./utils/cryptoSQL');
 const LocalStategy = require('passport-local').Strategy;
+const checkDataAndSeed = require('./utils/checkDataAndSeed');
+
+// check if there is already data in DB or seed it
+// wait 10s for mySQL to setup table schemes
+setTimeout(checkDataAndSeed, 10000);
 
 const sessionConfig = {
     // for safety, some defaults have better been modified to avoid session hijack
-    name:"campUser",// cookie name, default is "connect.sid" if not specified
+    name: "campUser",// cookie name, default is "connect.sid" if not specified
     secret: 'thisissecretjkl80&-df#f',// string for computing hash, it should be random
     resave: false, // not resaving session if no modified, for reducing server loading
     saveUninitialized: true, // to suppress warning
@@ -29,6 +34,8 @@ const sessionConfig = {
         httpOnly: true // for web safety, session is only accessible by http
     }
 };
+
+
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
@@ -55,7 +62,7 @@ passport.use(strategy);
 // save user info at session
 passport.serializeUser((user, done) => {
     console.log('in the serialize');
-    done(null, { id: user.id, username: user.username});
+    done(null, { id: user.id, username: user.username });
 });
 
 // add info to req.user
@@ -77,7 +84,7 @@ app.use((req, res, next) => {
 // routers
 app.use('/campgrounds', campgroundsRoute);
 app.use('/campgrounds/:id/reviews', reviewsRoute);
-app.use('/',usersRoute);
+app.use('/', usersRoute);
 
 // homepage
 app.get('/', (req, res) => {

@@ -13,21 +13,27 @@ services:
       MYSQL_PASSWORD: paul123
       MYSQL_DATABASE: my_camp
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
   db:
     image: mysql:latest
     container_name: container-MySQL
     environment:
       MYSQL_ROOT_PASSWORD: root123
-      MYSQL_DATABASE: my_camp
       MYSQL_USER: paul
       MYSQL_PASSWORD: paul123
+      MYSQL_DATABASE: my_camp
     networks:
       - my-network-MySQL
     volumes:
       - ./seeds:/docker-entrypoint-initdb.d
       - ./data/MySQL:/var/lib/mysql
-
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 2s
+      retries: 10
+      timeout: 21s
 
 networks:
   my-network-MySQL:

@@ -13,8 +13,6 @@ const defaulUser = {
     // password: 'paul123'
 }
 
-seedSQLDB();
-
 async function seedSQLDB() {
     // delete all history data in tables
     await querySQL('DELETE FROM campgrounds');
@@ -58,3 +56,5 @@ function sampleArray(array) {//randomly return an element from the input array
 function traverseArray(array, i) {
     return array[(i % array.length)];
 }
+
+module.exports=seedSQLDB;

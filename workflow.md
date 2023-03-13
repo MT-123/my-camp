@@ -76,6 +76,9 @@ K. docker
         5. Important!! stop mongoDB before stop container, go to container terminal and command:
             "mongosh" "use admin" "db.shutdownServer()"
 
+    note to get into container terminal:
+    % "docker exec -it container_id /bin/bash"
+
     k2. mycamp
     1. create dockerfile and .dockerignore
     2. build image "docker build -t mycamp/network:1.1 ."
@@ -142,6 +145,20 @@ b. set up volumes:
 b1. initialization path to .sql to create DB and tables
 b2. specify the local folder the persist the DB data
 2. go into app container to execute the seeding file
+
+1. setup MySQL at RDS and create BD my_camp
+2. setup a image with create_table.sql file based on MySQL image
+3. run a task with the MySQL image and set up following env 
+- HOST_SQL=(link to RDS MySQL) 
+- MYSQL_USER
+- MYSQL_PASSWORD
+- MYSQL_DATABASE=my_camp
+then at container override: Command override
+type in :
+mysql -h $HOST_SQL -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE < ./my_sql_script/create_table.sql
+
+
+
 
 
 

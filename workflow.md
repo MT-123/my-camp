@@ -1,67 +1,77 @@
 A. initialize the project
-1. create a empty folder and and remote repo at github
-2. cd to the folder and git init
-3. create .gitignore
-4. add the remote repo to the git
-5. first commit and push to the remote
-6. npm init
-B. establish the base structure and seed database
-1. npm install express mongoose ejs
-2. setup express for home page(app.js and views/home.ejs)
-3. setup mongoose model(campground.js)
-4. create the db my-camp by mongosh and connect it in the app.js
-5. create the js file for seeding data(seeds/index.js)
-C. create CRUD pages
-1. name the url with hierachy structure
-2. Read page: show.ejs
-3. Create page: new.ejs
-4. Update page: update.ejs
-5. Delete page: delete.ejs
-D. revise pages with boilerplate and bootstrap
-1. instal ejs mate
-2. create boilerplate
-3. revise the CRUD pages with bootstrap
-E. add error handler at client and server side
-1. use bootstrap form control class for client error handler
-2. create ExpressError class and wrapAsync fn for server error handler
-3. create Joi schema and validation middleware fn for server side data validation
-F. add review feature
-1. create review DB model, Joi model, and add form to the show page
-2. make routes for post a review, add review to campgroung and review model
-3. make route for delete a review, remove remove from both models
-4. make delete middleware to delete reviews as the related campground is deleted
-G. refactor the routes and middlewares by router
-1. create router files for campgrounds ans reviews
-2. set up the middleware for the routers
-H. add session and flash for success and error events
-1. install express-session and connect-flash by npm
-2. setup the session option and add flash message to routes
-3. create flash partials
-I. Authetication
-1. install 3 passport packages passport passport-local passport-local-mongoose
-2. create user model and middleware for passport
-3. create user route, registration page, and feature of create a user to users DB
-4. create login route, page and login authentication with passport middleware
-5. create log out route and pages
-6. add feature: redirect to previous page after login
-7. add feature: campgrounds add author data and show author on show page
-8. check authorization before create, edit, and delete
-9. add author data to the review and check the authorization for create and delete
-H. refactor the route to the controller
-1. extract functions from routers(campgrounds, reviews, and users) to create controllers
-2. using router.route the condense the request route
-I. image file store at cloud
-1. install multer and create upload feature: revise form at new.ejs and add upload middleware at campground router
-2. install couldnary and multer-storage-cloudinary and setup cloudinary.js for upload img to the cloud
-3. revise new, show, and edit page for upload images
-4. revise campground model to write the uploaded image info into it
-5. revise seeding function and seed again
-6. revise edit page for delete image at DB and cloudinay
-7. revise camp schema to get compact img from cloud
-J. use helmet and mongo sanitize for web security
+    1. create a empty folder and and remote repo at github
+    2. cd to the folder and git init
+    3. create .gitignore
+    4. add the remote repo to the git
+    5. first commit and push to the remote
+    6. npm init
 
-K. docker
-    k1. mongoDB
+B. establish the base structure and seed database
+    1. npm install express mongoose ejs
+    2. setup express for home page(app.js and views/home.ejs)
+    3. setup mongoose model(campground.js)
+    4. create the db my-camp by mongosh and connect it in the app.js
+    5. create the js file for seeding data(seeds/index.js)
+
+C. create CRUD pages
+    1. name the url with hierachy structure
+    2. Read page: show.ejs
+    3. Create page: new.ejs
+    4. Update page: update.ejs
+    5. Delete page: delete.ejs
+
+D. revise pages with boilerplate and bootstrap
+    1. instal ejs mate
+    2. create boilerplate
+    3. revise the CRUD pages with bootstrap
+
+E. add error handler at client and server side
+    1. use bootstrap form control class for client error handler
+    2. create ExpressError class and wrapAsync fn for server error handler
+    3. create Joi schema and validation middleware fn for server side data validation
+
+F. add review feature
+    1. create review DB model, Joi model, and add form to the show page
+    2. make routes for post a review, add review to campgroung and review model
+    3. make route for delete a review, remove remove from both models
+    4. make delete middleware to delete reviews as the related campground is deleted
+
+G. refactor the routes and middlewares by router
+    1. create router files for campgrounds ans reviews
+    2. set up the middleware for the routers
+
+H. add session and flash for success and error events
+    1. install express-session and connect-flash by npm
+    2. setup the session option and add flash message to routes
+    3. create flash partials
+
+I. Authetication
+    1. install 3 passport packages passport passport-local passport-local-mongoose
+    2. create user model and middleware for passport
+    3. create user route, registration page, and feature of create a user to users DB
+    4. create login route, page and login authentication with passport middleware
+    5. create log out route and pages
+    6. add feature: redirect to previous page after login
+    7. add feature: campgrounds add author data and show author on show page
+    8. check authorization before create, edit, and delete
+    9. add author data to the review and check the authorization for create and delete
+
+H. refactor the route to the controller
+    1. extract functions from routers(campgrounds, reviews, and users) to create controllers
+    2. using router.route the condense the request route
+
+I. image file store at cloud
+    1. install multer and create upload feature: revise form at new.ejs and add upload middleware at campground router
+    2. install couldnary and multer-storage-cloudinary and setup cloudinary.js for upload img to the cloud
+    3. revise new, show, and edit page for upload images
+    4. revise campground model to write the uploaded image info into it
+    5. revise seeding function and seed again
+    6. revise edit page for delete image at DB and cloudinay
+    7. revise camp schema to get compact img from cloud
+    8. use helmet and mongo sanitize for web security(helmet deprecated as migrating to AWS due to it forced https which requires SSL/TLS certificates)
+
+K. docker(using MongoDB)
+    - DB container: mongoDB
         1. stop local mongod to release port:27017 for container mongod
         2. download mongo image by "docker pull mongo:latest"
         3. find mongo image and its id by "docker images"
@@ -71,97 +81,154 @@ K. docker
         4. run the container by:
             "docker run --name [name the container] -v [the path of host folder to store DB data]:/data/db --network [network-name] -d [image id/name]"
         example:
-            "docker run -d --network test-network-1 --name container-mongo -v /Users/changpaul/Documents/projects/udemy/webDevBootCamp/camp/myCampDB/data:/data/db cf5bc883c474"
+            "docker run -d --network test-network-1 --name container-mongo -v /Users/paul/Documents/projects/myCampDB/data:/data/db cf5bc883c474"
         note. -v: volume; -d: run at background
         5. Important!! stop mongoDB before stop container, go to container terminal and command:
             "mongosh" "use admin" "db.shutdownServer()"
 
-    note to get into container terminal:
-    % "docker exec -it container_id /bin/bash"
+        note to get into container terminal:
+        % "docker exec -it container_id /bin/bash"
 
-    k2. mycamp
-    1. create dockerfile and .dockerignore
-    2. build image "docker build -t mycamp/network:1.1 ."
-    3. run container:
-    note -p: port forward [host port:container port]
-    "docker run --name MyCampNetworkv1.2 -p 80:80 --network test-network-1 -d mycamp/network:1.1"
-    4. test if the website works
+    - app container: mycamp
+        1. create dockerfile and .dockerignore
+        2. build image "docker build -t mycamp/network:1.1 ."
+        3. run container:
+        note -p: port forward [host port:container port]
+        "docker run --name MyCampNetworkv1.2 -p 80:80 --network test-network-1 -d mycamp/network:1.1"
+        4. test if the website works
 
-    k3. improve container process by docker-compose
-
-L. AWS
-1. signup for AWS and setup IAM
-2. AWS CLI
-2.1. install AES CLI
-2.2 configure CLI:
-a. IAM> users> [choose a user]> [go to security credentials]> [go to Access keys and create access key]
-> [folow instruction] > [get the acces key pair]
-b. % "aws configure" and setup the key pair, and region
-3. Create repository at ECR
-4. Upload image to ECR 
-a. % "aws ecr create-repository --repository-name my-camp-mysql --region ap-northeast-1" and copy the output
-b. use the output info to fill up the command 
- % "docker tag mycamp-app 689406677901.dkr.ecr.ap-northeast-1.amazonaws.com/my-camp-mysql"
- "mycamp-app" is image name
- "689406677901.dkr...." is the value of key "repositoryUri" in the output
- more info:
- https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/create-container-image.html
-c. 
-% Login AWS ECR
-"docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-1) 689406677901.dkr.ecr.ap-northeast-1.amazonaws.com" 
-the pattern is 
-"docker login -u AWS -p $(aws ecr get-login-password --region REGION) aws_account_id.dkr.ecr.REGION.amazonaws.com"
-d. push image to ECR
-% "docker push 689406677901.dkr.ecr.ap-northeast-1.amazonaws.com/my-camp-mysql"
-"689406677901.dkr...." is the value of key "repositoryUri" in the output
-e. to get repository info
-% "aws ecr describe-repositories"
-
-3. AWS CDK
-3.1 install CDK
-% "sudo npm install -g aws-cdk" 
-3.2 bootstrap CDK
-% "cdk bootstrap aws://689406677901/ap-northeast-1"
-get the Account number(689406677901) by: % "aws sts get-caller-identity"
-get region(ap-northeast-1) by: % "aws configure get region"
-3.3 
-
-
-
+    - use docker compose: 
+        improve container run process by docker-compose. create services for each container and create the shared network, override the environment variables
 
 M. DB migration from MongoDB to MySQL
-1. create my_camp DB and tables of MySQL
-2. create seeding functions and seed data
-3. refactor passport local strategy and serializtion for MySQL
-4. refactor the controller and middleware from mongoDB to MySQL
-5. package functions to modules and setup .env file
-6. clean up unused mongo related files and npm packages
-7. repace npm package mysql with mysql2 for connection issues
+    1. create my_camp DB and tables of MySQL
+    2. create seeding functions and seed data
+    3. refactor passport local strategy and serializtion for MySQL
+    4. refactor the controller and middleware from mongoDB to MySQL
+    5. package functions to modules and setup .env file
+    6. clean up unused mongo related files and npm packages
+    7. repace npm package mysql with mysql2 for connection issues
 
-N. docker
-1. create docker compose file
-a. set up environment variables for mysql connection
-b. set up volumes:
-b1. initialization path to .sql to create DB and tables
-b2. specify the local folder the persist the DB data
-2. go into app container to execute the seeding file
+N. docker(using MySQL)
+    1. create docker compose file
+        a. app service: set environment variables for mysql connection
+        b. db service: set up volumes
+           - to create DB and tables, set initialization path to .sql
+           - specify the local folder to persist the DB data
+        c. setup network for connection between app and db containers
+    2. docker compose up
+    3. go into the app container cmd to execute the seeding file
+        % "docker exec -it [container_id] [path_to_bash]"
+        ex. "docker exec -it 5c3148e ../bin/bash" and then "node ./seeds/indexSQL.js"
+    4. for AWS ECR:
+        To auto create tables and seed the data by containers instead of using cmd, two images are implemented for making the web serve at AWS.
+        - app-my-camp: The app is modified to auto seed the data if there is no any user in the DB as the app starts.
+        - create-sql-tables: an image for creating tables as its container runs. It will take the host, user, password, and database name from the environment variables fed in and link to the RDS MySQL, and then execute the .sql to create the tables
 
-1. setup MySQL at RDS and create BD my_camp
-2. setup a image with create_table.sql file based on MySQL image
-3. run a task with the MySQL image and set up following env 
-- HOST_SQL=(link to RDS MySQL) 
-- MYSQL_USER
-- MYSQL_PASSWORD
-- MYSQL_DATABASE=my_camp
-then at container override: Command override
-type in :
-mysql -h $HOST_SQL -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE < ./my_sql_script/create_table.sql
+L. AWS
+- AWS CLI
+      1. signup for AWS and setup IAM
+      2. AWS CLI
+    - install CLI
+    - configure CLI:
+        a. IAM> users> choose a user> go to security credentials> go to Access keys and create access key> folow instruction > get the acces key pair > % "aws configure" setup the key pair and region
+
+- AWS VPC(check region first, choose Tokyo)
+  1. choose VPC and more
+  2. 2 AZs, 2 public and 2 private subnet(auto setup CIDR)
+  4. No NAT gateways and VPC endpoints(ECS fargate do not require them)
+  5. the AWS will automatically do:
+   - create internet gateway, route table
+   - attach internet gateway to the VPC
+   - add route to link internet gateway to internet(dest. 0.0.0.0/0)
+   - associate route table(associate subnets with the VPC)
+  6. Create security group:
+   - choose VPC
+   - Inbound rules: type: HTTP, Source type: Anywhere-IPv4
+
+- AWS RDS
+  1. Create DB subnet group: choose the VPC and take 2 private subnets with different AZs
+  2.  Create MYSQL database
+  3.  choose the VPC and the DB subnet gruop
+  4.  Public access: No
+  5.  VPC security group: default(for traffic in the same VPC)
+  6.  Additional configuration> Database Options> Initial database name: my_camp
+  7.  create database and find "Connectivity & security" > "Endpoint & port" copy the Endpoint for HOST_SQL
+
+- AWS ECR
+  14. Create repository at ECR:
+      % "aws ecr create-repository --repository-name my-camp-mysql --region ap-northeast-1" 
+      and copy the output
+  15. tag the images to the ECR repository:
+      % "docker tag mycamp-app 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/my-camp-mysql"
+      the pattern is
+      "docker tag [image name] [repositoryUri in the output]"
+      - more info: https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/create-container-image.html
+  16. push the images:
+      3.1 Login AWS ECR
+          "docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-1) 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com" 
+          the pattern is 
+          "docker login -u AWS -p $(aws ecr get-login-password --region [REGION]) [aws_account_id].dkr.ecr.[REGION].amazonaws.com"
+      3.2 push image to ECR
+          % "docker push 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/my-camp-mysql"
+          the pattern is
+          "docker push [repositoryUri in the output]"
+
+      note. to get repository info: % "aws ecr describe-repositories"
+
+- AWS ECS by Fargate
+      prerequisite: 
+      - create and push create-sql-tables and app-my-camp images to ECR
+      - DB `my_camp` ready at RDS
+    - A. create-sql-tables task
+        1. create a task definition with the image. 
+        - port mapping: 3306 tcp http
+        - no task role needed
+        - env:
+          HOST_SQL=(the link to RDS MySQL) 
+          MYSQL_USER
+          MYSQL_PASSWORD
+          MYSQL_DATABASE=my_camp
+        2. run the task and set up following 
+        - select all public subnets
+        - security group: default, mysql port3306 anywhere
+        - turn on the public IP
+        - wait for the task complete and exit
+
+    - B. my-camp-app task:
+      1. create a task definition with the image: 
+        - port mapping: 80 tcp http
+        - no task role needed
+        - env:
+          HOST_SQL=(the endpoint of RDS MySQL) 
+          MYSQL_USER
+          MYSQL_PASSWORD
+          MYSQL_DATABASE=my_camp
+      2. run the task and set up following 
+        - select all public subnets
+        - security group: default, HTTP port80 anywhere
+        - turn on the public IP
+
+     - C. Run my-camp cluster
+        1. create cluster, choose the VPC and all the subnets
+        2. Tasks> Run new tasks:
+          2-1. create my camp tables in RDS
+           1. Launch type: Fargate 
+           2. Family: choose the ECR my-camp-create-tables
+           3. Networking: choose the VPC, Subnets: the private subnets to the DB
+           4. Security group: use only default(no need for internet access)
+           5. Public IP: Turned off(no need for internet access)
+           6. at Container overrides> 
+            - Environment variable overrides:
 
 
-
-
-
-
-
-
+    - AWS CDK(not adopted)
+        3.1 install CDK: 
+            % "sudo npm install -g aws-cdk" 
+        3.2 bootstrap CDK:
+            % "cdk bootstrap aws://123456789012/ap-northeast-1"
+            - get the Account number(123456789012) by: 
+            % "aws sts get-caller-identity"
+            - get region(ap-northeast-1) by: 
+            % "aws configure get region"
 

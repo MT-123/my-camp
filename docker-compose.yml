@@ -9,9 +9,12 @@ services:
       - my-network-MySQL
     environment:
       HOST_SQL: container-MySQL
-      MYSQL_USER: paul
-      MYSQL_PASSWORD: paul123
+      MYSQL_USER: your_username
+      MYSQL_PASSWORD: your_password
       MYSQL_DATABASE: my_camp
+      CLOUDINARY_API_NAME: API_info_from_Cloudinary
+      CLOUDINARY_API_KEY: API_info_from_Cloudinary
+      CLOUDINARY_API_SECRET: API_info_from_Cloudinary
     depends_on:
       db:
         condition: service_healthy
@@ -20,9 +23,9 @@ services:
     image: mysql:latest
     container_name: container-MySQL
     environment:
-      MYSQL_ROOT_PASSWORD: root123
-      MYSQL_USER: paul
-      MYSQL_PASSWORD: paul123
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: your_username
+      MYSQL_PASSWORD: your_password
       MYSQL_DATABASE: my_camp
     networks:
       - my-network-MySQL

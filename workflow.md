@@ -227,7 +227,11 @@ P. migrate to typescript
   2. %"tsc --init" and setup tsconfig.json
   3. Setup package.json by adding {"build": "tsc"} to "scripts" and then 
   %"npm run build" to compile .ts
-  4. 
+  4. work on files:
+  -app.js:
+    1. install "@types/express @types/connect-flash @types/passport"
+    2. create types and interfaces for user, done, and err
+  
 
 
 

@@ -37,17 +37,15 @@ const sessionConfig = {
 
 //setup types and interfaces
 import {Request, Response, NextFunction, ErrorRequestHandler} from "express";
-interface user{
+interface User{
     id: string;
     username: string;
 }
-type DoneCB = (err: any, user?: user | false | null) => void;
-interface ExtraErrInfo {
+type DoneCB = (err: any, user?: User | false | null) => void;
+interface CustomErr extends ErrorRequestHandler{
     statusCode: number;
     message: string;
 }
-interface CustomErr extends ErrorRequestHandler,ExtraErrInfo{}
-
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
@@ -72,13 +70,13 @@ const strategy = new LocalStategy(customField, verifyUser);
 passport.use(strategy);
 
 // save user info at session
-passport.serializeUser((user: user, done:DoneCB) => {
+passport.serializeUser((user: User, done:DoneCB) => {
     console.log('in the serialize');
     done(null, { id: user.id, username: user.username });
 });
 
 // add info to req.user
-passport.deserializeUser((user: user, done:DoneCB) => {
+passport.deserializeUser((user: User, done:DoneCB) => {
     console.log('in the deserialize, id:', user.id);
     done(null, user);
 });

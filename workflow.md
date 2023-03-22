@@ -220,3 +220,14 @@ O. Host the web by AWS
       2. bootstrap CDK: % "cdk bootstrap aws://123456789012/ap-northeast-1"
       to get the Account number(123456789012) by: % "aws sts get-caller-identity"
       to get region(ap-northeast-1) by: % "aws configure get region"
+
+P. migrate to typescript
+  1. %"npm i -D typescript @types/node"
+  @types/node is for typescript to identify the names in node like "require"
+  2. %"tsc --init" and setup tsconfig.json
+  3. Setup package.json by adding {"build": "tsc"} to "scripts" and then 
+  %"npm run build" to compile .ts
+  4. 
+
+
+

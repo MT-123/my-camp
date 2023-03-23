@@ -18,4 +18,3 @@ userController.redirectLoggedIn); // login authentication
 // logout
 router.get('/logout', userController.logout);
 module.exports = router;
-//# sourceMappingURL=users.js.map

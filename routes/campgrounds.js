@@ -23,4 +23,3 @@ router.route('/:id')
     .put(isLoggedIn, isAuthor, upload.array('photoFile', 5), validateCampground, wrapAsync(campController.updateCamp)) // Update 2/2
     .delete(isLoggedIn, isAuthor, wrapAsync(campController.deleteCamp)); // Delete
 module.exports = router;
-//# sourceMappingURL=campgrounds.js.map

@@ -9,4 +9,3 @@ function wrapAsync(fn) {
 }
 ;
 module.exports = wrapAsync;
-//# sourceMappingURL=wrapAsync.js.map

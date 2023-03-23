@@ -36,4 +36,3 @@ const query = function (sql, values) {
     });
 };
 module.exports = query;
-//# sourceMappingURL=querySQL.js.map

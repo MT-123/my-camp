@@ -31,4 +31,3 @@ function checkDataAndSeed() {
     });
 }
 module.exports = checkDataAndSeed;
-//# sourceMappingURL=checkDataAndSeed.js.map

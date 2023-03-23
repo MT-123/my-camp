@@ -9,4 +9,3 @@ class ExpressError extends Error {
 }
 ;
 module.exports = ExpressError;
-//# sourceMappingURL=ExpressError.js.map

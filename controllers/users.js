@@ -57,4 +57,3 @@ module.exports.logout = (req, res, next) => {
         res.redirect('/campgrounds');
     });
 };
-//# sourceMappingURL=users.js.map

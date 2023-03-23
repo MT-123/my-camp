@@ -10,4 +10,3 @@ router.post('/', isLoggedIn, validateReview, wrapAsync(reviewController.createRe
 // delete a review
 router.delete('/:reviewId', isReviewAuthor, wrapAsync(reviewController.deleteReview));
 module.exports = router;
-//# sourceMappingURL=reviews.js.map

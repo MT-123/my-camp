@@ -16,4 +16,3 @@ module.exports.verifyReviewSchema = Joi.object({
         body: Joi.string().required()
     })
 });
-//# sourceMappingURL=joiSchemas.js.map

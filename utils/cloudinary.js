@@ -19,4 +19,3 @@ module.exports = {
     cloudinary,
     storage,
 };
-//# sourceMappingURL=cloudinary.js.map

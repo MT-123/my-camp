@@ -231,7 +231,34 @@ P. migrate to typescript
   -app.js:
     1. install "@types/express @types/connect-flash @types/passport"
     2. create types and interfaces for user, done, and err
-  
 
+export { }; to make module mode
 
+import type {PoolConnection} from 'mysql2';
+type Fn=(req:Request, res:Response, next:NextFunction)=>any;
 
+declare module 'express-session' {
+    interface SessionData {
+        returnTo?: string;
+    }
+}
+declare global {
+    namespace Express {
+        interface User {
+            id: string;
+        }
+    }
+}
+
+class ExpressError extends Error {
+    statusCode:number;
+    constructor (message: string, statusCode:number) {
+        super();
+        this.message = message;
+        this.statusCode = statusCode;
+    }
+};
+
+const resultsImages:{filename:string}[]= await querySQL('SELECT filename 
+
+const imgValues = (req.files as Express.Multer.File[]).map((arr:Express.Multer.File) => ([ arr.filename, arr.path, resultsCamp.insertId ]));

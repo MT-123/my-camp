@@ -78,9 +78,9 @@ L. docker(using MongoDB)
     4. create network:
     % "docker network create test-network-1" pattern: docker network create [network-name]
     5. run the container by:
-    "docker run --name [name the container] -v [the path of host folder to store DB data]:/data/db --network [network-name] -d [image id/name]"
+    % "docker run --name [name the container] -v [the path of host folder to store DB data]:/data/db --network [network-name] -d [image id/name]"
     example:
-    "docker run -d --network test-network-1 --name container-mongo -v /Users/paul/Documents/projects/myCampDB/data:/data/db cf5bc883c474"
+    % "docker run -d --network test-network-1 --name container-mongo -v /Users/paul/Documents/projects/myCampDB/data:/data/db cf5bc883c474"
     note. -v: volume; -d: run at background
     6. Important!! stop mongoDB before stop container, go to container terminal and command:
           "mongosh" "use admin" "db.shutdownServer()"
@@ -89,10 +89,10 @@ L. docker(using MongoDB)
 
   - app container: mycamp
     1. create dockerfile and .dockerignore
-    2. build image "docker build -t mycamp/network:1.1 ."
+    2. build image % "docker build -t mycamp/network:1.1 ."
     3. run container:
-    note -p: port forward [host port:container port]
-    "docker run --name MyCampNetworkv1.2 -p 80:80 --network test-network-1 -d mycamp/network:1.1"
+    % "docker run --name MyCampNetworkv1.2 -p 80:80 --network test-network-1 -d mycamp/network:1.1"
+    note. -p: port forward [host port:container port]
     4. test if the website works
 
   - docker compose: 
@@ -142,7 +142,7 @@ O. Host the web by AWS
       - more info: https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/create-container-image.html
   3. push the images:
       - Login AWS ECR
-          "docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-1) 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com" 
+          % "docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-1) 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com" 
           the pattern is 
           "docker login -u AWS -p $(aws ecr get-login-password --region [REGION]) [aws_account_id].dkr.ecr.[REGION].amazonaws.com"
       - push image to ECR
@@ -222,14 +222,14 @@ O. Host the web by AWS
       to get region(ap-northeast-1) by: % "aws configure get region"
 
 P. migrate to typescript
-  1. %"npm i -D typescript @types/node"
+  1. % "npm i -D typescript @types/node"
   @types/node is for typescript to identify the names in node like "require"
   2. %"tsc --init" and setup tsconfig.json
   3. Setup package.json by adding {"build": "tsc"} to "scripts" and then 
   %"npm run build" to compile .ts
   4. work on files:
   -app.js:
-    1. install "@types/express @types/connect-flash @types/passport"
+    1. install type definitions packages as needed like @types/express, @types/connect-flash, @types/passport"
     2. create types and interfaces for user, done, and err
 
 export { }; to make module mode

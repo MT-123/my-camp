@@ -1,7 +1,7 @@
 const querySQL = require('./querySQL');
 const crypto = require('crypto');// node built-in
 import {Request, Response, NextFunction} from "express";
-import {AuthenticateCallback} from "passport"
+import {AuthenticateCallback} from "passport";
 
 const pbkdf2Config = {
     iterations: 10000,

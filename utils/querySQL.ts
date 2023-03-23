@@ -28,7 +28,7 @@ const query = function (sql:string, values:(string | number)[]) {
             resolve(results)
           }
           connection.release();
-          console.log('! SQL connection ended');
+          console.log('V SQL connection ended');
         })
       }
     })

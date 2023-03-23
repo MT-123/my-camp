@@ -50,15 +50,13 @@ const strategy = new LocalStategy(customField, verifyUser);
 passport.use(strategy);
 // save user info at session
 passport.serializeUser((user, done) => {
-    console.log('in the serialize');
     done(null, { id: user.id, username: user.username });
 });
 // add info to req.user
 passport.deserializeUser((user, done) => {
-    console.log('in the deserialize, id:', user.id);
     done(null, user);
 });
-// objects access to every page
+// objects available to every page
 app.use((req, res, next) => {
     // flash
     res.locals.success = req.flash('success');

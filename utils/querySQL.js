@@ -29,7 +29,7 @@ const query = function (sql, values) {
                         resolve(results);
                     }
                     connection.release();
-                    console.log('! SQL connection ended');
+                    console.log('V SQL connection ended');
                 });
             }
         });

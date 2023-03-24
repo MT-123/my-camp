@@ -3,3 +3,4 @@ node_modules
 .vscode
 .DS_Store
 .env
+/create_tables_to_RDS

@@ -1,10 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
-const express = require('express');
-const app = express();
+//setup types and interfaces
+const express_1 = __importDefault(require("express"));
+// const express = require('express');
+const app = (0, express_1.default)();
 const port = process.env.PORT || 8080;
 const path = require('path');
 const methodOverride = require('method-override');
@@ -37,9 +42,9 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 app.engine('ejs', ejsMate);
 // use ejsMate instead of the default
-app.use(express.urlencoded({ extended: true })); // for req.body
+app.use(express_1.default.urlencoded({ extended: true })); // for req.body
 app.use(methodOverride('_method'));
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express_1.default.static(path.join(__dirname, '/public')));
 //set up path for static files at the public folder
 app.use(flash());
 app.use(session(sessionConfig));

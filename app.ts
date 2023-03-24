@@ -2,7 +2,19 @@ if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
-const express = require('express');
+//setup types and interfaces
+import express, {ErrorRequestHandler} from "express";
+interface UserInfo {
+    id: string;
+    username: string;
+}
+type DoneCB = (err: any, user?: UserInfo | false | null) => void;
+interface CustomErr extends ErrorRequestHandler{
+    statusCode?: number;
+    message: string;
+}
+
+// const express = require('express');
 const app = express();
 const port = process.env.PORT || 8080;
 const path = require('path');
@@ -35,17 +47,6 @@ const sessionConfig = {
     }
 };
 
-//setup types and interfaces
-import {Request, Response, NextFunction, ErrorRequestHandler} from "express";
-interface UserInfo {
-    id: string;
-    username: string;
-}
-type DoneCB = (err: any, user?: UserInfo | false | null) => void;
-interface CustomErr extends ErrorRequestHandler{
-    statusCode?: number;
-    message: string;
-}
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
@@ -80,7 +81,7 @@ passport.deserializeUser((user: UserInfo, done:DoneCB) => {
 });
 
 // objects available to every page
-app.use((req:Request, res:Response, next: NextFunction) => {
+app.use((req, res, next) => {
     // flash
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -95,19 +96,19 @@ app.use('/campgrounds/:id/reviews', reviewsRoute);
 app.use('/', usersRoute);
 
 // homepage
-app.get('/', (req:Request, res:Response) => {
+app.get('/', (req, res) => {
     res.render('home');
 });
 
 // catch the unexpected url
-app.all('*', (req:Request, res:Response, next: NextFunction) => {
+app.all('*', (req, res, next) => {
     const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     console.log('! request url out of routes!!! url:\n', fullUrl)
     return next(new ExpressError('No such link!', 404));
 });
 
 // catch error
-app.use((err:CustomErr, req:Request, res:Response, next: NextFunction) => {
+app.use((err:CustomErr, req: express.Request, res: express.Response, next:express.NextFunction) => {
     const { statusCode = 500, message = "Internal issue :'(" } = err;
     console.log('X ERROR:\n', err);
     res.status(statusCode).render('error', { statusCode, message })

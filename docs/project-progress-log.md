@@ -1,4 +1,4 @@
-A. initialize the project
+**A. initialize the project**
   1. create a empty folder and and remote repo at github
   2. cd to the folder and git init
   3. create .gitignore
@@ -6,46 +6,46 @@ A. initialize the project
   5. first commit and push to the remote
   6. npm init
 
-B. establish the base structure and seed database
+**B. establish the base structure and seed database**
   1. npm install express mongoose ejs
   2. setup express for home page(app.js and views/home.ejs)
   3. setup mongoose model(campground.js)
   4. create the db my-camp by mongosh and connect it in the app.js
   5. create the js file for seeding data(seeds/index.js)
 
-C. create CRUD pages
+**C. create CRUD pages**
   1. name the url with hierachy structure
   2. Read page: show.ejs
   3. Create page: new.ejs
   4. Update page: update.ejs
   5. Delete page: delete.ejs
 
-D. revise pages with boilerplate and bootstrap
+**D. revise pages with boilerplate and bootstrap**
   1. instal ejs mate
   2. create boilerplate
   3. revise the CRUD pages with bootstrap
 
-E. add error handler at client and server side
+**E. add error handler at client and server side**
   1. use bootstrap form control class for client error handler
   2. create ExpressError class and wrapAsync fn for server error handler
   3. create Joi schema and validation middleware fn for server side data validation
 
-F. add review feature
+**F. add review feature**
   1. create review DB model, Joi model, and add form to the show page
   2. make routes for post a review, add review to campgroung and review model
   3. make route for delete a review, remove remove from both models
   4. make delete middleware to delete reviews as the related campground is deleted
 
-G. refactor the routes and middlewares by router
+**G. refactor the routes and middlewares by router**
   1. create router files for campgrounds ans reviews
   2. set up the middleware for the routers
 
-H. add session and flash for success and error events
+**H. add session and flash for success and error events**
   1. install express-session and connect-flash by npm
   2. setup the session option and add flash message to routes
   3. create flash partials
 
-I. Authetication
+**I. Authetication**
   1. install 3 passport packages passport passport-local passport-local-mongoose
   2. create user model and middleware for passport
   3. create user route, registration page, and feature of create a user to users DB
@@ -56,11 +56,11 @@ I. Authetication
   8. check authorization before create, edit, and delete
   9. add author data to the review and check the authorization for create and delete
 
-J. refactor the route to the controller
+**J. refactor the route to the controller**
   1. extract functions from routers(campgrounds, reviews, and users) to create controllers
   2. using router.route the condense the request route
 
-K. image file store at cloud
+**K. image file store at cloud**
   1. install multer and create upload feature: revise form at new.ejs and add upload middleware at campground router
   2. install couldnary and multer-storage-cloudinary and setup cloudinary.js for upload img to the cloud
   3. revise new, show, and edit page for upload images
@@ -70,7 +70,7 @@ K. image file store at cloud
   7. revise camp schema to get compact img from cloud
   8. use helmet and mongo sanitize for web security(helmet deprecated as migrating to AWS due to it forced https which requires SSL/TLS certificates)
 
-L. docker(using MongoDB)
+**L. docker(using MongoDB)**
   - DB container: mongoDB
     1. stop local mongod to release port:27017 for container mongod
     2. download mongo image by "docker pull mongo:latest"
@@ -98,7 +98,7 @@ L. docker(using MongoDB)
   - docker compose: 
      improve container run process by docker-compose. create services for each container and create the shared network, override the environment variables
 
-M. DB migration from MongoDB to MySQL
+**M. DB migration from MongoDB to MySQL**
   1. create my_camp DB and tables of MySQL
   2. create seeding functions and seed data
   3. refactor passport local strategy and serializtion for MySQL
@@ -107,7 +107,7 @@ M. DB migration from MongoDB to MySQL
   6. clean up unused mongo related files and npm packages
   7. repace npm package mysql with mysql2 for connection issues
 
-N. docker(using MySQL)
+**N. docker(using MySQL)**
   1. create docker compose file
     a. app service: set environment variables for mysql connection
     b. db service: set up volumes
@@ -123,7 +123,7 @@ N. docker(using MySQL)
      - create-sql-tables: an image for creating tables as its container runs. It will take the host, user, password, and database name from the environment variables fed in during task definition and link to the RDS MySQL, and then execute the .sql file to create tables.
      - app-my-camp: The app is modified to auto seed the data if there is no any user in the DB as the app starts.
 
-O. Host the web by AWS
+**O. Host the web by AWS**
 - AWS CLI
   1. signup for AWS and setup IAM
   2. AWS CLI
@@ -216,7 +216,7 @@ O. Host the web by AWS
         3. wait for the task be running, get the ip address to reach the website. Done!
 
 
-P. migrate to typescript
+**P. migrate to typescript**
   1. % "npm i -D typescript @types/node"
   @types/node is for typescript to identify the names in node like "require"
   2. %"tsc --init" and setup tsconfig.json

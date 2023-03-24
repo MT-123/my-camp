@@ -1,4 +1,5 @@
-const User = require('../models/user');
+const querySQL = require('../utils/querySQL');
+const {genPassword}=require('../utils/cryptoSQL')
 
 
 module.exports.renderRegister = (req, res) => {
@@ -8,9 +9,11 @@ module.exports.renderRegister = (req, res) => {
 module.exports.createUser = async (req, res, next) => {
     try {
         const { user } = req.body;
-        const newUser = new User(user);
-        const registerUser = await User.register(newUser, user.password);
-        // register argument is (user data[mongoose document],password[string])
+        const {hash,salt} = genPassword(user.password)
+        const {insertId} =await querySQL('INSERT INTO users (username,email,hash,salt) VALUES (?,?,?,?)',
+        [user.username,user.email, hash, salt]);
+        const registerUser = { username: user.username, id: insertId};
+
         req.login(registerUser, (err) => {
             if (err) { return next(err); }
             req.flash('success', 'Welcome, registration completed!');

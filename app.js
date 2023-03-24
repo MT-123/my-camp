@@ -1,13 +1,11 @@
-if(process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8080;
-const dbPath = process.env.DBPATH||'mongodb://localhost:27017/my-camp';
 const path = require('path');
-const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
@@ -16,18 +14,18 @@ const reviewsRoute = require('./routes/reviews');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
-const localStategy = require('passport-local');
-const User = require('./models/user');
 const usersRoute = require('./routes/users');
-const helmet = require("helmet");
-const {contentSecurityPolicy, crossOriginEmbedderPolicy} = require('./utils/helmetConfig');
-const mongoSanitize = require('express-mongo-sanitize');
+const { customField, verifyUser } = require('./utils/cryptoSQL');
+const LocalStategy = require('passport-local').Strategy;
+const checkDataAndSeed = require('./utils/checkDataAndSeed');
 
-
+// check if there is already data in DB or seed it
+// wait 10s for mySQL to setup table schemes
+setTimeout(checkDataAndSeed, 10000);
 
 const sessionConfig = {
     // for safety, some defaults have better been modified to avoid session hijack
-    name:"campUser",// cookie name, default is "connect.sid" if not specified
+    name: "campUser",// cookie name, default is "connect.sid" if not specified
     secret: 'thisissecretjkl80&-df#f',// string for computing hash, it should be random
     resave: false, // not resaving session if no modified, for reducing server loading
     saveUninitialized: true, // to suppress warning
@@ -37,13 +35,7 @@ const sessionConfig = {
     }
 };
 
-mongoose.set('strictQuery', true); // to supress mongoose warning
-mongoose.connect(dbPath);
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'X database connection error:'));
-db.once('open', () => {
-    console.log('V Database connected :)');
-});
+
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
@@ -55,27 +47,29 @@ app.use(express.urlencoded({ extended: true })); // for req.body
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, '/public')));
 //set up path for static files at the public folder
-app.use(session(sessionConfig));
+
+
 app.use(flash());
 
-app.use(helmet()); // make restriction for web security
-app.use(contentSecurityPolicy);// set the access to the specified outer resouces
-app.use(crossOriginEmbedderPolicy);// set the cross origin policy
-
-
-
-app.use(mongoSanitize());// to prevent mongo injection
-
+app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 //the passport.session must be after session middleware
-passport.use(new localStategy(User.authenticate()));
-// use local authentication with user model
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-//to store and remove the sessions of logged users
+const strategy = new LocalStategy(customField, verifyUser);
+passport.use(strategy);
 
+// save user info at session
+passport.serializeUser((user, done) => {
+    console.log('in the serialize');
+    done(null, { id: user.id, username: user.username });
+});
+
+// add info to req.user
+passport.deserializeUser((user, done) => {
+    console.log('in the deserialize, id:', user.id);
+    done(null, user);
+});
 
 // objects access to every page
 app.use((req, res, next) => {
@@ -87,11 +81,10 @@ app.use((req, res, next) => {
     return next();
 });
 
-
 // routers
 app.use('/campgrounds', campgroundsRoute);
 app.use('/campgrounds/:id/reviews', reviewsRoute);
-app.use('/',usersRoute);
+app.use('/', usersRoute);
 
 // homepage
 app.get('/', (req, res) => {

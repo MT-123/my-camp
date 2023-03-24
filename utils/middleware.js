@@ -1,8 +1,6 @@
-const { verifyCampSchema,verifyReviewSchema } = require('./utils/joiSchemas');
-const ExpressError = require('./utils/ExpressError');
-const Campground = require('./models/campground');
-const Review = require('./models/reviews');
-
+const { verifyCampSchema,verifyReviewSchema } = require('./joiSchemas');
+const ExpressError = require('./ExpressError');
+const querySQL = require('./querySQL');
 
 // login status check
 module.exports.isLoggedIn = (req, res, next) => {
@@ -26,8 +24,9 @@ module.exports.validateCampground = (req, res, next) => {
 // middleware for checking the user is the author
 module.exports.isAuthor = async (req, res, next) => {
     const { id } = req.params;
-    const camp = await Campground.findById(id);
-    if (!camp.author.equals(req.user._id)) {
+    const results = await querySQL('SELECT * FROM campgrounds WHERE campground_id = ?',[id])
+    // await Campground.findById(id);
+    if (results[0].author_id !== req.user.id) {
         req.flash('error', 'Not the author!');
         return res.redirect(`/campgrounds/${id}`);
     }
@@ -36,8 +35,9 @@ module.exports.isAuthor = async (req, res, next) => {
 
 module.exports.isReviewAuthor = async(req,res,next)=>{
     const { id , reviewId } = req.params;
-    const review = await Review.findById(reviewId);
-    if (!review.author.equals(req.user?._id)){
+    const results = await querySQL('SELECT * FROM reviews WHERE review_id = ?',[Number(reviewId)]);
+    // await Review.findById(reviewId);
+    if (results[0].author_id !== req.user?.id){
         // not logged in(req.user will be undefined) or not the review author will be true
         req.flash('error', 'Not this review author!');
         return res.redirect(`/campgrounds/${id}`);

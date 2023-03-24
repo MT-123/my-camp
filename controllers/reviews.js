@@ -1,23 +1,22 @@
-const Campground = require('../models/campground'); // import the model
-const Review = require('../models/reviews');
+const querySQL = require('../utils/querySQL');
+
 
 module.exports.createReview=async (req, res) => {
-    const { id } = req.params;
-    const newReview = new Review(req.body.reviews);
-    const camp = await Campground.findById(id);
-    newReview.author = req.user._id;
-    camp.reviews.push(newReview);
-    await camp.save();
-    await newReview.save();
+    const campground_id = req.params.id;
+    const {body,rating} = req.body.reviews;
+    const author_id = req.user.id;
+
+    await querySQL('INSERT INTO reviews (body, rating, author_id, campground_id) VALUES (?,?,?,?)',
+    [body,rating,author_id,Number(campground_id)]);
+
     req.flash('success', 'Review posted');
-    res.redirect(`/campgrounds/${id}`);
+    res.redirect(`/campgrounds/${campground_id}`);
 };
 
 module.exports.deleteReview = async (req, res) => {
     const { id, reviewId } = req.params;
-    await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    // remove the id matched review from the reviews array 
-    await Review.findByIdAndDelete(reviewId);
+    await querySQL('DELETE FROM reviews WHERE review_id = ?', [Number(reviewId)]);
+
     req.flash('success', 'Review deleted');
     res.redirect(`/campgrounds/${id}`);
 };

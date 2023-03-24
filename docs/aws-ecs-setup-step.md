@@ -1,0 +1,1 @@
+For steps of server migration from localhost to AWS ESC Fargate

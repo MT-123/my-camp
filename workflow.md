@@ -214,9 +214,3 @@ O. Host the web by AWS
            - Operating system/Architecture: ARM64(based on the image)
         2. run the task as create-sql-tables task and add the public access security group for internet access to the website
         3. wait for the task be running, get the ip address to reach the website. Done!
-
-  - AWS CDK(not adopted)
-      1. install CDK: % "sudo npm install -g aws-cdk" 
-      2. bootstrap CDK: % "cdk bootstrap aws://123456789012/ap-northeast-1"
-      to get the Account number(123456789012) by: % "aws sts get-caller-identity"
-      to get region(ap-northeast-1) by: % "aws configure get region"

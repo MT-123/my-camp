@@ -8,7 +8,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 //setup types and interfaces
 const express_1 = __importDefault(require("express"));
-// const express = require('express');
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8080;
 const path = require('path');

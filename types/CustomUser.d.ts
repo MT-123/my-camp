@@ -1,18 +1,12 @@
-// d.ts file treated as ambient(global) so no need to us 'global'
-declare module Express {
-    interface User {
-        id?: string;
-        username?:string;
+declare global {
+    namespace Express {
+        interface User {
+            id?: string;
+            username?: string;
+        }
     }
-
 }
 
-// for .ts file
-// declare global {
-//     module Express {
-//         interface User {
-//             id?: string;
-//             username?:string;
-//         }
-//     }
-// }
+// the pattern is based on passport merging interface User to the Express
+// ref @types/passport/index.d.ts
+export { };

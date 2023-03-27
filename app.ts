@@ -3,18 +3,15 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 //setup types and interfaces
-import express, { ErrorRequestHandler } from "express";
+import express from "express";
+
 interface UserInfo {
     id: string;
     username: string;
 }
-type DoneCB = (err: any, user?: UserInfo | false | null) => void;
-interface CustomErr extends ErrorRequestHandler {
-    statusCode?: number;
-    message: string;
-}
 
-// const express = require('express');
+type DoneCB = (err: any, user?: UserInfo | false | null) => void;
+
 const app = express();
 const port = process.env.PORT || 8080;
 const path = require('path');
@@ -59,9 +56,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, '/public')));
 //set up path for static files at the public folder
 
-
 app.use(flash());
-
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -108,7 +103,7 @@ app.all('*', (req, res, next) => {
 });
 
 // catch error
-app.use((err: CustomErr, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: express.ErrorRequestHandler, req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { statusCode = 500, message = "Internal issue :'(" } = err;
     console.log('X ERROR:\n', err);
     res.status(statusCode).render('error', { statusCode, message })

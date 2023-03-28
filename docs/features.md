@@ -6,12 +6,12 @@ This demo "MyCamp" is derived from the project "YelpCamp"†. In addition to the
 
 For further details, refer to the files in the docs folder:
 - ![AWS_diagram.png](AWS-diagram.png)
-the structure of website hosted on AWS with Elastic Container Service(ECS)
+  the structure of website hosted on AWS with Elastic Container Service(ECS)
 - ![RDS-schema-creation-diagram.png](RDS-schema-creation-diagram.png)
-the structure of creating tables on private RDS MySQL DB instace
+  the structure of creating tables on private RDS MySQL DB instace
 - ![docker-diagram.png](docker-diagram.png)
-the structure of website hosted on localhost with app container and database container(MySQL or MongoDB)
-- create-tables-to-RDS.md: procedure to create SQL schema with AWS RDS MySQL instance not exposed to Internet
-- project-progress-log.md: the detailed progress log of this project
+  the structure of website hosted on localhost with app container and database container(MySQL or MongoDB)
+- [create-tables-to-RDS.md](./create-tables-to-RDS.md): procedure to create SQL schema with AWS RDS MySQL instance not exposed to Internet
+- [project-progress-log.md](./project-progress-log.md): the detailed progress log of this project
 
 † "YelpCamp" is the project in the course "The Web Developer Bootcamp 2023" by Colt Steele at Udemy. YelpCamp Github link: https://github.com/Colt/YelpCamp.git

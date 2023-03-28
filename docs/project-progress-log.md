@@ -229,5 +229,5 @@
   - other files:
     1. add "export { };" to make module mode
     2. create types and interfaces
-    3. create myType.d.ts for adding properties id and username to Express.User
+    3. create type definition file(.d.ts) for adding properties to User, Error, and Session
   all compiled without errors

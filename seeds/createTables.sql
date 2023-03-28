@@ -20,7 +20,7 @@ CREATE TABLE `campgrounds` (
     `price` DECIMAL(8, 2) NOT NULL,
     `description` TEXT,
     `location` VARCHAR(255) NOT NULL,
-    `author_id` INT DEFAULT 1,
+    `author_id` INT,
     FOREIGN KEY (`author_id`) REFERENCES `users`(`user_id`) ON DELETE SET NULL
 );
 

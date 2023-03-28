@@ -6,15 +6,10 @@ import { descriptors, places } from './campTitle';
 import campDescription from './campDescription';
 import campImg from './campImg';
 
+import {defaultUsers} from './users'
+
 const querySQL = require('../utils/querySQL');
-const defaulUser = {
-    user_id: 1,
-    username: 'Paul',
-    email: 'paul@gmail.com',
-    salt: '1e386b05f5ab699a0610eee3d8070dececc112bec467102dc66050d97980fa2c',
-    hash: '781d7bf1174cfca3d3f559fb0d03b74bb09f7626ec4e91df8983df803d071f3f',
-    // password: 'paul123'
-}
+
 const numOfCampground = 12;
 
 async function seedSQLDB() {
@@ -23,11 +18,19 @@ async function seedSQLDB() {
     await querySQL('DELETE FROM images');
     await querySQL('DELETE FROM users');
 
-    // create default user
-    await querySQL(
-        'INSERT INTO users (user_id,username,salt,hash,email) VALUES (?,?,?,?,?)',
-        [defaulUser.user_id, defaulUser.username, defaulUser.salt, defaulUser.hash, defaulUser.email]
-    );
+    for (let i = 0; i < defaultUsers.length; i++) {
+        const id = i + 1;// id begins from 1
+        const username = defaultUsers[i][0];
+        const hash = defaultUsers[i][1];
+        const salt = defaultUsers[i][2];
+        const email = defaultUsers[i][3];
+
+        // create default user
+        await querySQL(
+            'INSERT INTO users (user_id,username,salt,hash,email) VALUES (?,?,?,?,?)',
+            [id, username, salt, hash, email]
+        );
+    }
 
     // seeding
     for (let i = 0; i < numOfCampground; i++) {
@@ -39,10 +42,11 @@ async function seedSQLDB() {
         // randomly select words from the dictionary
         const description = traverseArray(campDescription, i);
         const cloudImg = traverseArray(campImg, i);
+        const author_id = Math.floor(Math.random() * defaultUsers.length ) + 1;
 
         //write into campgrounds
-        const sqlCampground = 'INSERT INTO campgrounds (title, price, description, location, campground_id) VALUES (?,?,?,?,?)';
-        const valuesCampground = [title, price, description, location, campground_id];
+        const sqlCampground = 'INSERT INTO campgrounds (title, price, description, location, campground_id, author_id) VALUES (?,?,?,?,?,?)';
+        const valuesCampground = [title, price, description, location, campground_id, author_id];
         await querySQL(sqlCampground, valuesCampground);
 
         //write into images

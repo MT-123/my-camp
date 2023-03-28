@@ -215,7 +215,6 @@
         2. run the task as create-sql-tables task and add the public access security group for internet access to the website
         3. wait for the task be running, get the ip address to reach the website. Done!
 
-
 **P. migrate to typescript**
   1. % "npm i -D typescript @types/node"
   @types/node is for typescript to identify the names in node like "require"
@@ -230,4 +229,5 @@
     1. add "export { };" to make module mode
     2. create types and interfaces
     3. create type definition file(.d.ts) for adding properties to User, Error, and Session
-  all compiled without errors
+
+- End of the project -

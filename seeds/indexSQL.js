@@ -18,15 +18,8 @@ const cities_1 = __importDefault(require("./cities"));
 const campTitle_1 = require("./campTitle");
 const campDescription_1 = __importDefault(require("./campDescription"));
 const campImg_1 = __importDefault(require("./campImg"));
+const users_1 = require("./users");
 const querySQL = require('../utils/querySQL');
-const defaulUser = {
-    user_id: 1,
-    username: 'Paul',
-    email: 'paul@gmail.com',
-    salt: '1e386b05f5ab699a0610eee3d8070dececc112bec467102dc66050d97980fa2c',
-    hash: '781d7bf1174cfca3d3f559fb0d03b74bb09f7626ec4e91df8983df803d071f3f',
-    // password: 'paul123'
-};
 const numOfCampground = 12;
 function seedSQLDB() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -34,8 +27,15 @@ function seedSQLDB() {
         yield querySQL('DELETE FROM campgrounds');
         yield querySQL('DELETE FROM images');
         yield querySQL('DELETE FROM users');
-        // create default user
-        yield querySQL('INSERT INTO users (user_id,username,salt,hash,email) VALUES (?,?,?,?,?)', [defaulUser.user_id, defaulUser.username, defaulUser.salt, defaulUser.hash, defaulUser.email]);
+        for (let i = 0; i < users_1.defaultUsers.length; i++) {
+            const id = i + 1; // id begins from 1
+            const username = users_1.defaultUsers[i][0];
+            const hash = users_1.defaultUsers[i][1];
+            const salt = users_1.defaultUsers[i][2];
+            const email = users_1.defaultUsers[i][3];
+            // create default user
+            yield querySQL('INSERT INTO users (user_id,username,salt,hash,email) VALUES (?,?,?,?,?)', [id, username, salt, hash, email]);
+        }
         // seeding
         for (let i = 0; i < numOfCampground; i++) {
             const campground_id = i + 1;
@@ -46,9 +46,10 @@ function seedSQLDB() {
             // randomly select words from the dictionary
             const description = traverseArray(campDescription_1.default, i);
             const cloudImg = traverseArray(campImg_1.default, i);
+            const author_id = Math.floor(Math.random() * users_1.defaultUsers.length) + 1;
             //write into campgrounds
-            const sqlCampground = 'INSERT INTO campgrounds (title, price, description, location, campground_id) VALUES (?,?,?,?,?)';
-            const valuesCampground = [title, price, description, location, campground_id];
+            const sqlCampground = 'INSERT INTO campgrounds (title, price, description, location, campground_id, author_id) VALUES (?,?,?,?,?,?)';
+            const valuesCampground = [title, price, description, location, campground_id, author_id];
             yield querySQL(sqlCampground, valuesCampground);
             //write into images
             const sqlImage = 'INSERT INTO images (filename, url, campground_id) VALUES (?,?,?)';

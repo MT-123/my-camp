@@ -6,5 +6,5 @@ declare module 'express' {
     }
 }
 
-// module mode is required. Otherwise, the express will be overwritten by this module instead of augmentation
+// module mode is required. Otherwise, the express will be overwritten by this definition instead of augmentation
 export { };

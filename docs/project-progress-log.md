@@ -179,7 +179,7 @@
 
 - AWS ECS by Fargate
   1. create cluster, choose the VPC and all the subnets, Infrastructure: AWS Fargate
-  2. create tasks
+  2. create task and service with application load balancer(ALB)
     - prerequisite: 
       1. create and push create-sql-tables and app-my-camp images to ECR
       2. DB `my_camp` ready at RDS
@@ -195,12 +195,13 @@
            - Operating system/Architecture: ARM64(based on the image)
         2. run the task and set up following 
            - choose the cluster, launch type: Fargate
-           - Networking: choose VPC, Subnets: all public subnets(for pulling image from ECR by internet), Security group: default(for the traffic to the MySQL RDS in the same VPC)
-           - security group: default, mysql port3306 anywhere
-           - turn on the public IP(for pulling the image by internet)
+           - Application type: task
+           - Networking: choose VPC, Subnets: one public subnet(for pulling image from ECR by Internet), Security group: default(for the traffic to the MySQL RDS in the same VPC)
+           - turn on the public IP(for pulling the image by Internet)
            - wait for the task complete and exit
-    - my-camp-app task:
-       1. create a task definition with the image uri from ECR. Setup following: 
+           - note. if NAT gateway is used, image at ECR can be pulled internally without Internet
+    - my-camp-app service:
+        1. create a task definition with the image uri from ECR. Setup following: 
            - port mapping: 80/TCP/HTTP
            - no task role needed
            - Add environment variables:
@@ -212,16 +213,40 @@
              CLOUDINARY_API_KEY
              CLOUDINARY_API_SECRET
            - Operating system/Architecture: ARM64(based on the image)
-        2. run the task as create-sql-tables task and add the public access security group for internet access to the website
-        3. wait for the task be running, get the ip address to reach the website. Done!
+        2. create a service and set up following 
+           - choose the cluster, launch type: Fargate
+           - Application type: service
+           - choose Task definition
+           - Networking: choose VPC, Subnets: public subnets, Security group: default(for the traffic to the MySQL RDS in the same VPC) and a public access security group(HTTP port80 from anywhere)
+           - turn on the public IP
+           - Load balancing: ALB
+           - Create a new load balancer, Create new target group
+           - wait for the service ready
+           - get the DNS names at Networking to reach the website. Done!
+- AWS ALB: create an application load balancer independently
+  prerequisite: run a my-camp-app task with the setup changed to:
+    - Application type: task
+    - Networking> Security group: default only
+  1. create target groups
+    - Basic configuration: IP addresses
+    - choose VPC
+    - Specify IPs and define ports: private IP from the my-camp-app task
+    - click "Include as pending below" and create target group
+  2. create load balancer
+    - choose Application Load Balancer
+    - Scheme: Internet-facing
+    - choose VPC, choose AZs with public subnets
+    - Security groups: choose default and a public access security group(HTTP port80 from anywhere)
+    - Listeners and routing> Listener HTTP:80> Default action: choose the target group
+    - wait for ALB ready and copy DNS name to open the website done! (the Public IP of my-camp-app task is not accessible by Internet due to only a default security group)
 
 **P. migrate to typescript**
   1. % "npm i -D typescript @types/node"
   @types/node is for typescript to identify the names in node like "require"
-  2. %"tsc --init" and setup tsconfig.json
-  3. Setup package.json by adding {"build": "tsc"} to "scripts" and then 
+  1. %"tsc --init" and setup tsconfig.json
+  2. Setup package.json by adding {"build": "tsc"} to "scripts" and then 
   %"npm run build" to compile .ts
-  4. work on files:
+  1. work on files:
   - app.js:
     1. install type definitions packages as needed like @types/express, @types/connect-flash, @types/passport"
     2. create types and interfaces for user, done, and err

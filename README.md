@@ -9,7 +9,7 @@
   ![demo shorts]() login > select camp#1> leave comment
 - Error handle with duplicated user, invalid form input
   ![demo shorts]() register with the same name/ require form input
-- image storage on cloud by Cloudinary API
+- photo storage on cloud by Cloudinary API
 - host on cloud by AWS ECS Fargate with AWS RDS(MySQL)
   ![AWS diagram](docs/AWS-diagram.png)
 - host locally with NoSQL(MongoDB) or SQL(MySQL):

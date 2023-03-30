@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = [
     {
-        filename: 'MyCamp/photo-1517824806704-9040b037703b_u03xcy',
-        url: 'https://res.cloudinary.com/dnu4vvbi2/image/upload/v1676371695/MyCamp/photo-1517824806704-9040b037703b_u03xcy.jpg',
+        filename: 'MyCamp/o8ds9ud1vgreqhqbctzm',
+        url: 'https://res.cloudinary.com/dnu4vvbi2/image/upload/v1680172086/MyCamp/o8ds9ud1vgreqhqbctzm.png',
     },
     {
         filename: 'MyCamp/800px-Tent_camping_along_the_Sulayr_trail_in_La_Taha_2C_Sierra_Nevada_National_Park__28DSCF5147_29_z85bdg',
@@ -14,8 +14,8 @@ exports.default = [
         url: 'https://res.cloudinary.com/dnu4vvbi2/image/upload/v1676371671/MyCamp/px1597135-image-kwvxpck4.jpg_negqke.jpg',
     },
     {
-        filename: 'MyCamp/photo-1602391833977-358a52198938_sfneio',
-        url: 'https://res.cloudinary.com/dnu4vvbi2/image/upload/v1676371688/MyCamp/photo-1602391833977-358a52198938_sfneio.jpg',
+        filename: 'MyCamp/ju7mi211sufqffehepr3',
+        url: 'https://res.cloudinary.com/dnu4vvbi2/image/upload/v1680173248/MyCamp/ju7mi211sufqffehepr3.png',
     },
     {
         filename: 'MyCamp/11519019346_f66401b6c1_b_pdq8es',

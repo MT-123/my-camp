@@ -1,0 +1,23 @@
+<% layout('./layouts/boilerplate')%>
+<h1>My Camps</h1>
+<h2>Hi, <%= currentUser.username %></h2>
+
+<div class="row">
+    <% for (camp of camps) {%>
+        <div class="col-md-5 mx-1 my-1">
+            <div class="card" style="height: 100%;background-color: rgb(200, 200, 200,0.25);">
+                <div class="card-body d-flex flex-column">
+                    <p><b><%= camp.title%></b></p>
+                    <img src="<%= camp.cloudImg[0]?.url %>" class="img-fluid">
+                    <p>Price: <%= camp.price%></p>
+                    <p>Location: <%= camp.location%></p>
+                    <form class="card-text mb-2 mt-auto" action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
+                        <a href="/campgrounds/<%=camp._id%>" class="btn btn-primary">view</a>
+                        <a href="/campgrounds/<%= camp._id %>/edit" class="btn btn-warning mx-2">Edit</a>
+                        <button class="btn btn-danger">Delete</button>
+                      </form>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>

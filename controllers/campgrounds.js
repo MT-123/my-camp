@@ -31,13 +31,20 @@ module.exports.renderIndex = (req, res) => __awaiter(void 0, void 0, void 0, fun
     });
     res.render('./campgrounds/index', { camps });
 });
+module.exports.renderUserIndex = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const author_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+    const resultsCamp = yield querySQL('SELECT * FROM campgrounds WHERE author_id = ?', [Number(author_id)]);
+    const camps = yield composeCamps(resultsCamp);
+    res.render('./campgrounds/user_camps', { camps });
+});
 module.exports.renderNewForm = (req, res) => {
     res.render('./campgrounds/new');
 };
 module.exports.createCamp = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _b;
     const { title, price, location, description } = req.body.campground;
-    const author_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id; // req.user is created by passport after login done
+    const author_id = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id; // req.user is created by passport after login done
     const resultsCamp = yield querySQL('INSERT INTO campgrounds \
     (title, price, location, description, author_id) VALUES (?,?,?,?,?)', [title, price, location, description, author_id]);
     const imgValues = req.files.map((arr) => ([arr.filename, arr.path, resultsCamp.insertId]));

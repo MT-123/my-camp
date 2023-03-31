@@ -16,7 +16,7 @@ https://user-images.githubusercontent.com/65814999/229101514-0019e041-4f43-4127-
 https://user-images.githubusercontent.com/65814999/229101530-144c23af-a918-4607-a2d0-2147c141e3ce.MOV
 
 
-- login and make a comment and rating on other campgrounds 
+- login and make a comment and rating on other user's campground posts
 
 https://user-images.githubusercontent.com/65814999/229101601-0b701bae-a4d2-4837-b590-b30df818d887.MOV
 
@@ -26,6 +26,7 @@ https://user-images.githubusercontent.com/65814999/229101601-0b701bae-a4d2-4837-
 ## Web hosting architecture
 A. on cloud by AWS ECS Fargate with AWS RDS(MySQL)
   ![AWS diagram](docs/AWS-diagram.png)
+  
 B. locally by docker container with NoSQL(MongoDB) or SQL(MySQL):
   ![docker diagram](docs/docker-diagram.png)
 

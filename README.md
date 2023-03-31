@@ -3,23 +3,30 @@
 ## Features
 - view campground posts with photos, information, and comments
 
-https://user-images.githubusercontent.com/65814999/229092433-3c2f8741-9632-4a23-be5c-e67caedd6614.MP4
+https://user-images.githubusercontent.com/65814999/229101479-37389607-4fe0-456b-8963-3a1e40d784e3.MOV
+
 
 - register an user to create your own campground post 
 
-https://user-images.githubusercontent.com/65814999/229092779-b570c6a9-8373-4b0b-8ce9-00fc85ca0f27.MP4
+https://user-images.githubusercontent.com/65814999/229101514-0019e041-4f43-4127-8663-1489ca494f60.MOV
+
 
 - edit and update your own campground post
 
-https://user-images.githubusercontent.com/65814999/229092923-ae081ddf-bca3-4f5f-b629-4d7010210f49.MP4
+https://user-images.githubusercontent.com/65814999/229101530-144c23af-a918-4607-a2d0-2147c141e3ce.MOV
+
 
 - login and make a comment and rating on other campgrounds 
 
-https://user-images.githubusercontent.com/65814999/229092967-98ad12eb-4da1-4d88-a20b-cbd6f94fb4ff.MP4
+https://user-images.githubusercontent.com/65814999/229101601-0b701bae-a4d2-4837-b590-b30df818d887.MOV
+
 
 - photo storage on cloud by Cloudinary API
-- host on cloud by AWS ECS Fargate with AWS RDS(MySQL)
+
+## Web hosting architecture
+A. on cloud by AWS ECS Fargate with AWS RDS(MySQL)
   ![AWS diagram](docs/AWS-diagram.png)
-- host locally with NoSQL(MongoDB) or SQL(MySQL):
+B. locally by docker container with NoSQL(MongoDB) or SQL(MySQL):
   ![docker diagram](docs/docker-diagram.png)
+
 - for more detail, check [features.md](./docs/features.md):

@@ -6,17 +6,38 @@ services:
     ports:
       - "80:80"
     networks:
-      - my-network
+      - my-network-MySQL
     environment:
-      DBPATH: mongodb://container-mongo:27017/my-camp
+      HOST_SQL: container-MySQL
+      MYSQL_USER: your_username
+      MYSQL_PASSWORD: your_password
+      MYSQL_DATABASE: my_camp
+      CLOUDINARY_API_NAME: API_info_from_Cloudinary
+      CLOUDINARY_API_KEY: API_info_from_Cloudinary
+      CLOUDINARY_API_SECRET: API_info_from_Cloudinary
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
-    image: mongo:latest
-    container_name: container-mongo
+    image: mysql:latest
+    container_name: container-MySQL
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: your_username
+      MYSQL_PASSWORD: your_password
+      MYSQL_DATABASE: my_camp
     networks:
-      - my-network
+      - my-network-MySQL
     volumes:
-      - ./data/mongo:/data/db
+      - ./seeds:/docker-entrypoint-initdb.d
+      - ./data/MySQL:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 2s
+      retries: 10
+      timeout: 21s
 
 networks:
-  my-network:
+  my-network-MySQL:
     driver: bridge

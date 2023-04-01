@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-8 offset-2">
             <h1 class="text-center">edit the camp</h1>
-            <form action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST" class="needs-validation"
+            <form action="/campgrounds/<%= camp.id %>?_method=PUT" method="POST" class="needs-validation"
                 enctype="multipart/form-data" novalidate>
                 <!-- novalidate to suppress the default validation-->
                 <label class="form-label mt-3" for="title">Title</label>
@@ -62,6 +62,6 @@
                         <% } %>
                             <button class="btn btn-success mt-2 float-end">Update campground</button>
             </form>
-            <a href="/campgrounds/<%= camp._id %>" class="btn btn-primary mt-2">Back</a>
+            <a href="/campgrounds/<%= camp.id %>" class="btn btn-primary mt-2">Back</a>
         </div>
     </div>

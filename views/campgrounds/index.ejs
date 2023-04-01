@@ -1,11 +1,11 @@
 <% layout('./layouts/boilerplate')%>
-    <h1>Campgrounds</h1>
+    <h1>My Camp index</h1>
 
     <% let i=1;for (camp of camps) {%>
         <div class="card mb-3">
             <div class="row">
                 <div class="col-md-4">
-                    <img src="<%= camp.cloudImg[0]?.url %>" class="img-fluid">
+                    <img src=<%= camp.cloudImg[0]?.url %> class="img-fluid">
                     <!-- using ? in case no image in camp.cloudImg[0]?-->
                 </div>
                 <div class="col-md-8">

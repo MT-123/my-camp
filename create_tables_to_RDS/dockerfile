@@ -1,0 +1,4 @@
+FROM mysql:latest
+WORKDIR /my_sql_script
+COPY . .
+CMD [ "sh", "-c", "mysql -h $HOST_SQL -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE < ./createTables.sql" ]

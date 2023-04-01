@@ -1,0 +1,43 @@
+version: '1.0'
+services:
+  app:
+    build: .
+    container_name: my-camp
+    ports:
+      - "80:80"
+    networks:
+      - my-network-MySQL
+    environment:
+      HOST_SQL: container-MySQL
+      MYSQL_USER: your_username
+      MYSQL_PASSWORD: your_password
+      MYSQL_DATABASE: my_camp
+      CLOUDINARY_API_NAME: API_info_from_Cloudinary
+      CLOUDINARY_API_KEY: API_info_from_Cloudinary
+      CLOUDINARY_API_SECRET: API_info_from_Cloudinary
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:latest
+    container_name: container-MySQL
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: your_username
+      MYSQL_PASSWORD: your_password
+      MYSQL_DATABASE: my_camp
+    networks:
+      - my-network-MySQL
+    volumes:
+      - ./seeds:/docker-entrypoint-initdb.d
+      - ./data/MySQL:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 2s
+      retries: 10
+      timeout: 21s
+
+networks:
+  my-network-MySQL:
+    driver: bridge

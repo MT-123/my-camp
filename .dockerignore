@@ -1,0 +1,10 @@
+**/.DS_Store
+.git
+**/.git
+.gitignore
+.vscode
+.env
+**/node_modules
+docker-compose*
+/data
+/create_tables_to_RDS

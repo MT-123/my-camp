@@ -30,4 +30,4 @@ A. on cloud by AWS ECS Fargate with AWS RDS(MySQL)
 B. locally by docker container with NoSQL(MongoDB) or SQL(MySQL):
   ![docker diagram](docs/docker-diagram.png)
 
-- For more detail, check [features.md](./docs/features.md):
+- For more detail, check [features.md](./docs/features.md)

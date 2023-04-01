@@ -45,7 +45,7 @@
   2. setup the session option and add flash message to routes
   3. create flash partials
 
-**I. Authetication**
+**I. authetication**
   1. install 3 passport packages passport passport-local passport-local-mongoose
   2. create user model and middleware for passport
   3. create user route, registration page, and feature of create a user to users DB
@@ -70,8 +70,8 @@
   7. revise camp schema to get compact img from cloud
   8. use helmet and mongo sanitize for web security(helmet deprecated as migrating to AWS due to it forced https which requires SSL/TLS certificates)
 
-**L. docker(using MongoDB)**
-  - DB container: mongoDB
+**L. docker(using MongoDB as database)**
+  - database container: mongoDB
     1. stop local mongod to release port:27017 for container mongod
     2. download mongo image by "docker pull mongo:latest"
     3. find mongo image and its id by "docker images"
@@ -96,9 +96,9 @@
     4. test if the website works
 
   - docker compose: 
-     improve container run process by docker-compose. create services for each container and create the shared network, override the environment variables
+    improve container run process by docker-compose. create services for each container and create the shared network, override the environment variables
 
-**M. DB migration from MongoDB to MySQL**
+**M. database migration from MongoDB to MySQL**
   1. create my_camp DB and tables of MySQL
   2. create seeding functions and seed data
   3. refactor passport local strategy and serializtion for MySQL
@@ -107,7 +107,7 @@
   6. clean up unused mongo related files and npm packages
   7. repace npm package mysql with mysql2 for connection issues
 
-**N. docker(using MySQL)**
+**N. docker(using MySQL as database)**
   1. create docker compose file
     a. app service: set environment variables for mysql connection
     b. db service: set up volumes
@@ -126,20 +126,19 @@
 **O. Host the web by AWS**
 - AWS CLI
   1. signup for AWS and setup IAM
-  2. AWS CLI
-     - install CLI and configure CLI:
-        1. IAM> users> choose a user> go to security credentials> go to Access keys and create access key> folow instruction > get the acces key pair
-        2. % "aws configure" setup the key pair and region
+  2. install and configure CLI:
+     1. IAM> users> choose a user> go to security credentials> go to Access keys and create access key> folow instruction > get the acces key pair
+     2. % "aws configure" setup the key pair and region
 
 - AWS ECR
   1. create repository at ECR:
-      % "aws ecr create-repository --repository-name my-camp-mysql --region ap-northeast-1" 
-      and copy the output
+    % "aws ecr create-repository --repository-name my-camp-mysql --region ap-northeast-1" 
+    and copy the output
   2. tag the images to the ECR repository:
-      % "docker tag mycamp-app 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/my-camp-mysql"
-      the pattern is
-      "docker tag [image name] [repositoryUri in the output]"
-      - more info: https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/create-container-image.html
+    % "docker tag mycamp-app 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/my-camp-mysql"
+    the pattern is
+    "docker tag [image name] [repositoryUri in the output]"
+    - more info: https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/create-container-image.html
   3. push the images:
       - Login AWS ECR
           % "docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-1) 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com" 
@@ -243,16 +242,16 @@
 **P. migrate to typescript**
   1. % "npm i -D typescript @types/node"
   @types/node is for typescript to identify the names in node like "require"
-  1. %"tsc --init" and setup tsconfig.json
-  2. Setup package.json by adding {"build": "tsc"} to "scripts" and then 
+  2. %"tsc --init" and setup tsconfig.json
+  3. Setup package.json by adding {"build": "tsc"} to "scripts" and then 
   %"npm run build" to compile .ts
-  1. work on files:
-  - app.js:
-    1. install type definitions packages as needed like @types/express, @types/connect-flash, @types/passport"
-    2. create types and interfaces for user, done, and err
-  - other files:
-    1. add "export { };" to make module mode
-    2. create types and interfaces
-    3. create type definition file(.d.ts) for adding properties to User, Error, and Session
+  4. work on files:
+     - app.js:
+      1. install type definitions packages as needed like @types/express, @types/connect-flash, @types/passport"
+      2. create types and interfaces for user, done, and err
+     - other files:
+      1. add "export { };" to make module mode
+      2. create types and interfaces
+      3. create type definition file(.d.ts) for adding properties to User, Error, and Session
 
-- End of the project -
+-- End of the project --

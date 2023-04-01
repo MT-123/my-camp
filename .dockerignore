@@ -1,10 +1,2 @@
-**/.DS_Store
-.git
-**/.git
-.gitignore
-.vscode
-.env
-**/node_modules
-docker-compose*
+node_modules
 /data
-/create_tables_to_RDS

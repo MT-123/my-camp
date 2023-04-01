@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const Joi = require('joi');
 module.exports.verifyCampSchema = Joi.object({
     campground: Joi.object({
@@ -10,6 +8,7 @@ module.exports.verifyCampSchema = Joi.object({
     }).required(),
     deleteImg: Joi.array(),
 });
+
 module.exports.verifyReviewSchema = Joi.object({
     reviews: Joi.object({
         rating: Joi.number().min(1).max(5).integer().required(),

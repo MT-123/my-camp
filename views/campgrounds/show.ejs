@@ -98,7 +98,7 @@
             </figcaption>
           </div>
 
-          <% if (currentUser && currentUser.id === review.author.id){%>
+          <% if (currentUser?.equals(review.author)){%>
           <!-- currentUser exists and equals to review author -->
           <form action="/campgrounds/<%= camp._id %>/reviews/<%=review._id%>?_method=DELETE" method="POST">
             <button class="btn btn-danger float-end mb-2">Delete</button>
@@ -113,9 +113,9 @@
               <a href="/campgrounds" class="btn btn-primary float-end">Back to the list</a>
 
               <!-- not author not allowed to edit and delete -->
-              <% if ( currentUser && (currentUser.id === camp.author.user_id)){ %>
+              <% if ( currentUser && currentUser.equals(camp.author)){ %>
                 <!-- currentUser exists and equals to campground author -->
-
+                <!-- .equals is the method of mongoose document object -->
                 <a href="/campgrounds/<%= camp._id %>/edit" class="btn btn-warning mx-2">Edit</a>
                 <button class="btn btn-danger">Delete</button>
                 <% } %>

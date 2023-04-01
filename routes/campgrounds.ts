@@ -17,6 +17,9 @@ router.route('/')
         validateCampground,
         wrapAsync(campController.createCamp));
 
+// user camp index
+router.get('/usercamp', isLoggedIn, wrapAsync(campController.renderUserIndex));
+
 // new campground page
 router.get('/new', isLoggedIn, campController.renderNewForm);
 

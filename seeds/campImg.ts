@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = [
+export default [
     {
         filename: 'MyCamp/o8ds9ud1vgreqhqbctzm',
         url: 'https://res.cloudinary.com/dnu4vvbi2/image/upload/v1680172086/MyCamp/o8ds9ud1vgreqhqbctzm.png',

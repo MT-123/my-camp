@@ -4,12 +4,6 @@ const querySQL = require('./querySQL');
 import { Request, Response, NextFunction } from "express";
 import { ValidationError } from 'joi';
 
-declare module 'express-session' {
-    interface SessionData {
-        returnTo?: string;
-    }
-}
-
 // login status check
 module.exports.isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
     if (!req.isAuthenticated()) {

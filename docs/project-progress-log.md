@@ -1,4 +1,4 @@
-A. initialize the project
+**A. initialize the project**
   1. create a empty folder and and remote repo at github
   2. cd to the folder and git init
   3. create .gitignore
@@ -6,46 +6,46 @@ A. initialize the project
   5. first commit and push to the remote
   6. npm init
 
-B. establish the base structure and seed database
+**B. establish the base structure and seed database**
   1. npm install express mongoose ejs
   2. setup express for home page(app.js and views/home.ejs)
   3. setup mongoose model(campground.js)
   4. create the db my-camp by mongosh and connect it in the app.js
   5. create the js file for seeding data(seeds/index.js)
 
-C. create CRUD pages
+**C. create CRUD pages**
   1. name the url with hierachy structure
   2. Read page: show.ejs
   3. Create page: new.ejs
   4. Update page: update.ejs
   5. Delete page: delete.ejs
 
-D. revise pages with boilerplate and bootstrap
+**D. revise pages with boilerplate and bootstrap**
   1. instal ejs mate
   2. create boilerplate
   3. revise the CRUD pages with bootstrap
 
-E. add error handler at client and server side
+**E. add error handler at client and server side**
   1. use bootstrap form control class for client error handler
   2. create ExpressError class and wrapAsync fn for server error handler
   3. create Joi schema and validation middleware fn for server side data validation
 
-F. add review feature
+**F. add review feature**
   1. create review DB model, Joi model, and add form to the show page
   2. make routes for post a review, add review to campgroung and review model
   3. make route for delete a review, remove remove from both models
   4. make delete middleware to delete reviews as the related campground is deleted
 
-G. refactor the routes and middlewares by router
+**G. refactor the routes and middlewares by router**
   1. create router files for campgrounds ans reviews
   2. set up the middleware for the routers
 
-H. add session and flash for success and error events
+**H. add session and flash for success and error events**
   1. install express-session and connect-flash by npm
   2. setup the session option and add flash message to routes
   3. create flash partials
 
-I. Authetication
+**I. authetication**
   1. install 3 passport packages passport passport-local passport-local-mongoose
   2. create user model and middleware for passport
   3. create user route, registration page, and feature of create a user to users DB
@@ -56,11 +56,11 @@ I. Authetication
   8. check authorization before create, edit, and delete
   9. add author data to the review and check the authorization for create and delete
 
-J. refactor the route to the controller
+**J. refactor the route to the controller**
   1. extract functions from routers(campgrounds, reviews, and users) to create controllers
   2. using router.route the condense the request route
 
-K. image file store at cloud
+**K. image file store at cloud**
   1. install multer and create upload feature: revise form at new.ejs and add upload middleware at campground router
   2. install couldnary and multer-storage-cloudinary and setup cloudinary.js for upload img to the cloud
   3. revise new, show, and edit page for upload images
@@ -70,8 +70,8 @@ K. image file store at cloud
   7. revise camp schema to get compact img from cloud
   8. use helmet and mongo sanitize for web security(helmet deprecated as migrating to AWS due to it forced https which requires SSL/TLS certificates)
 
-L. docker(using MongoDB)
-  - DB container: mongoDB
+**L. docker(using MongoDB as database)**
+  - database container: mongoDB
     1. stop local mongod to release port:27017 for container mongod
     2. download mongo image by "docker pull mongo:latest"
     3. find mongo image and its id by "docker images"
@@ -96,9 +96,9 @@ L. docker(using MongoDB)
     4. test if the website works
 
   - docker compose: 
-     improve container run process by docker-compose. create services for each container and create the shared network, override the environment variables
+    improve container run process by docker-compose. create services for each container and create the shared network, override the environment variables
 
-M. DB migration from MongoDB to MySQL
+**M. database migration from MongoDB to MySQL**
   1. create my_camp DB and tables of MySQL
   2. create seeding functions and seed data
   3. refactor passport local strategy and serializtion for MySQL
@@ -107,7 +107,7 @@ M. DB migration from MongoDB to MySQL
   6. clean up unused mongo related files and npm packages
   7. repace npm package mysql with mysql2 for connection issues
 
-N. docker(using MySQL)
+**N. docker(using MySQL as database)**
   1. create docker compose file
     a. app service: set environment variables for mysql connection
     b. db service: set up volumes
@@ -123,23 +123,22 @@ N. docker(using MySQL)
      - create-sql-tables: an image for creating tables as its container runs. It will take the host, user, password, and database name from the environment variables fed in during task definition and link to the RDS MySQL, and then execute the .sql file to create tables.
      - app-my-camp: The app is modified to auto seed the data if there is no any user in the DB as the app starts.
 
-O. Host the web by AWS
+**O. Host the web by AWS**
 - AWS CLI
   1. signup for AWS and setup IAM
-  2. AWS CLI
-     - install CLI and configure CLI:
-        1. IAM> users> choose a user> go to security credentials> go to Access keys and create access key> folow instruction > get the acces key pair
-        2. % "aws configure" setup the key pair and region
+  2. install and configure CLI:
+     1. IAM> users> choose a user> go to security credentials> go to Access keys and create access key> folow instruction > get the acces key pair
+     2. % "aws configure" setup the key pair and region
 
 - AWS ECR
   1. create repository at ECR:
-      % "aws ecr create-repository --repository-name my-camp-mysql --region ap-northeast-1" 
-      and copy the output
+    % "aws ecr create-repository --repository-name my-camp-mysql --region ap-northeast-1" 
+    and copy the output
   2. tag the images to the ECR repository:
-      % "docker tag mycamp-app 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/my-camp-mysql"
-      the pattern is
-      "docker tag [image name] [repositoryUri in the output]"
-      - more info: https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/create-container-image.html
+    % "docker tag mycamp-app 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/my-camp-mysql"
+    the pattern is
+    "docker tag [image name] [repositoryUri in the output]"
+    - more info: https://docs.aws.amazon.com/zh_tw/AmazonECS/latest/developerguide/create-container-image.html
   3. push the images:
       - Login AWS ECR
           % "docker login -u AWS -p $(aws ecr get-login-password --region ap-northeast-1) 123456789012.dkr.ecr.ap-northeast-1.amazonaws.com" 
@@ -179,7 +178,7 @@ O. Host the web by AWS
 
 - AWS ECS by Fargate
   1. create cluster, choose the VPC and all the subnets, Infrastructure: AWS Fargate
-  2. create tasks
+  2. create task and service with application load balancer(ALB)
     - prerequisite: 
       1. create and push create-sql-tables and app-my-camp images to ECR
       2. DB `my_camp` ready at RDS
@@ -195,12 +194,13 @@ O. Host the web by AWS
            - Operating system/Architecture: ARM64(based on the image)
         2. run the task and set up following 
            - choose the cluster, launch type: Fargate
-           - Networking: choose VPC, Subnets: all public subnets(for pulling image from ECR by internet), Security group: default(for the traffic to the MySQL RDS in the same VPC)
-           - security group: default, mysql port3306 anywhere
-           - turn on the public IP(for pulling the image by internet)
+           - Application type: task
+           - Networking: choose VPC, Subnets: one public subnet(for pulling image from ECR by Internet), Security group: default(for the traffic to the MySQL RDS in the same VPC)
+           - turn on the public IP(for pulling the image by Internet)
            - wait for the task complete and exit
-    - my-camp-app task:
-       1. create a task definition with the image uri from ECR. Setup following: 
+           - note. if NAT gateway is used, image at ECR can be pulled internally without Internet
+    - my-camp-app service:
+        1. create a task definition with the image uri from ECR. Setup following: 
            - port mapping: 80/TCP/HTTP
            - no task role needed
            - Add environment variables:
@@ -212,22 +212,46 @@ O. Host the web by AWS
              CLOUDINARY_API_KEY
              CLOUDINARY_API_SECRET
            - Operating system/Architecture: ARM64(based on the image)
-        2. run the task as create-sql-tables task and add the public access security group for internet access to the website
-        3. wait for the task be running, get the ip address to reach the website. Done!
+        2. create a service and set up following 
+           - choose the cluster, launch type: Fargate
+           - Application type: service
+           - choose Task definition
+           - Networking: choose VPC, Subnets: public subnets, Security group: default(for the traffic to the MySQL RDS in the same VPC) and a public access security group(HTTP port80 from anywhere)
+           - turn on the public IP
+           - Load balancing: ALB
+           - Create a new load balancer, Create new target group
+           - wait for the service ready
+           - get the DNS names at Networking to reach the website. Done!
+- AWS ALB: create an application load balancer independently
+  prerequisite: run a my-camp-app task with the setup changed to:
+    - Application type: task
+    - Networking> Security group: default only
+  1. create target groups
+    - Basic configuration: IP addresses
+    - choose VPC
+    - Specify IPs and define ports: private IP from the my-camp-app task
+    - click "Include as pending below" and create target group
+  2. create load balancer
+    - choose Application Load Balancer
+    - Scheme: Internet-facing
+    - choose VPC, choose AZs with public subnets
+    - Security groups: choose default and a public access security group(HTTP port80 from anywhere)
+    - Listeners and routing> Listener HTTP:80> Default action: choose the target group
+    - wait for ALB ready and copy DNS name to open the website done! (the Public IP of my-camp-app task is not accessible by Internet due to only a default security group)
 
-
-P. migrate to typescript
+**P. migrate to typescript**
   1. % "npm i -D typescript @types/node"
   @types/node is for typescript to identify the names in node like "require"
   2. %"tsc --init" and setup tsconfig.json
   3. Setup package.json by adding {"build": "tsc"} to "scripts" and then 
   %"npm run build" to compile .ts
   4. work on files:
-  - app.js:
-    1. install type definitions packages as needed like @types/express, @types/connect-flash, @types/passport"
-    2. create types and interfaces for user, done, and err
-  - other files:
-    1. add "export { };" to make module mode
-    2. create types and interfaces
-    3. create myType.d.ts for adding properties id and username to Express.User
-  all compiled without errors
+     - app.js:
+      1. install type definitions packages as needed like @types/express, @types/connect-flash, @types/passport"
+      2. create types and interfaces for user, done, and err
+     - other files:
+      1. add "export { };" to make module mode
+      2. create types and interfaces
+      3. create type definition file(.d.ts) for adding properties to User, Error, and Session
+
+-- End of the project --

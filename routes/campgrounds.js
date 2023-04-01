@@ -14,6 +14,8 @@ router.route('/')
     .post(// create campgrounds
 isLoggedIn, upload.array('photoFile', 5), // upload image files and create req.files for files info
 validateCampground, wrapAsync(campController.createCamp));
+// user camp index
+router.get('/usercamp', isLoggedIn, wrapAsync(campController.renderUserIndex));
 // new campground page
 router.get('/new', isLoggedIn, campController.renderNewForm);
 // Update 1/2

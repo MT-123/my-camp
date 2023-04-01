@@ -46,6 +46,13 @@ module.exports.renderIndex = async (req: Request, res: Response) => {
     res.render('./campgrounds/index', { camps });
 };
 
+module.exports.renderUserIndex = async (req: Request, res: Response) => {
+    const author_id = req.user?.id;
+    const resultsCamp = await querySQL('SELECT * FROM campgrounds WHERE author_id = ?' , [Number(author_id)]);
+    const camps = await composeCamps(resultsCamp);
+    res.render('./campgrounds/user_camps', { camps });
+};
+
 module.exports.renderNewForm = (req: Request, res: Response) => {
     res.render('./campgrounds/new');
 };

@@ -1,6 +1,10 @@
-# MyCamp
+# MyCamp- for web developer practice
 *view, create, revise, and comment on campground blog hosted by AWS ECS Fargate*
 ## Features
+1. A member register and login system.
+2. CRUD mainipulation on your own posts.
+3. Make a rating and comment on other's post.
+## Demo
 - View campground posts with photos, information, and comments
 
 https://user-images.githubusercontent.com/65814999/229101479-37389607-4fe0-456b-8963-3a1e40d784e3.MOV
@@ -20,14 +24,11 @@ https://user-images.githubusercontent.com/65814999/229101530-144c23af-a918-4607-
 
 https://user-images.githubusercontent.com/65814999/229101601-0b701bae-a4d2-4837-b590-b30df818d887.MOV
 
-
-- Photo storage on cloud by Cloudinary API
-
 ## Web hosting architecture
 A. on cloud by AWS ECS Fargate with AWS RDS(MySQL)
-  ![AWS diagram](docs/AWS-diagram.png)
+  ![AWS diagram](docs/aws-diagram.png)
   
-B. locally by docker container with NoSQL(MongoDB) or SQL(MySQL):
+B. locally by docker container with NoSQL(MongoDB)
   ![docker diagram](docs/docker-diagram.png)
 
 - For more detail, check [features.md](./docs/features.md)

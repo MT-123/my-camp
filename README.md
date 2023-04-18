@@ -1,8 +1,8 @@
-# MyCamp- for web developer practice
-*view, create, revise, and comment on campground blog hosted by AWS ECS Fargate*
+# MyCamp- as a web developer practice
+*A blog hosted by AWS ECS Fargate for creating, editing, and commenting  on posts.*
 ## Features
 1. A member register and login system.
-2. CRUD mainipulation on your own posts.
+2. CRUD manipulation on your own posts.
 3. Make a rating and comment on other's post.
 ## Demo
 - View campground posts with photos, information, and comments
